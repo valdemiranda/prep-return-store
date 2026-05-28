@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "turbo dev",
-    "build": "turbo build --force && npm ci --prefix apps/backend/.medusa/server --omit=dev --no-audit --no-fund",
+    "build": "turbo build",
     "start": "node scripts/start-production.mjs",
     "lint": "turbo lint",
     "test": "turbo test",

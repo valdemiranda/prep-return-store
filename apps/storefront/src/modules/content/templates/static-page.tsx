@@ -18,8 +18,8 @@ export default async function StaticPageTemplate({
   const html = content?.staticPages[pageKey] ?? ""
 
   return (
-    <main className="max-w-container-sm mx-auto px-margin-mobile md:px-gutter py-16">
-      <article className="prose prose-neutral max-w-none prose-headings:font-display prose-a:text-primary">
+    <main className="content-container py-16">
+      <article className="prose prose-neutral max-w-3xl prose-headings:font-display prose-a:text-primary">
         {html ? (
           <div dangerouslySetInnerHTML={{ __html: html }} />
         ) : (
