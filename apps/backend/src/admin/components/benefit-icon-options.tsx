@@ -1,0 +1,81 @@
+import React from "react"
+import {
+  ArrowPath,
+  ArchiveBox,
+  BellAlert,
+  Calendar,
+  ChatBubbleLeftRight,
+  ChartBar,
+  Clock,
+  CreditCard,
+  CubeSolid,
+  DocumentText,
+  Eye,
+  Fire,
+  Gift,
+  Globe,
+  Heart,
+  InboxSolid,
+  Lifebuoy,
+  LightBulb,
+  LockClosedSolid,
+  MapPin,
+  Phone,
+  Puzzle,
+  ReceiptPercent,
+  RocketLaunch,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Star,
+  Tag,
+  Target,
+  TruckFast,
+  Wrench,
+} from "@medusajs/icons"
+
+type IconComponent = React.ComponentType<{ className?: string }>
+
+export const benefitIconOptions: {
+  value: string
+  label: string
+  Icon: IconComponent
+}[] = [
+  { value: "truck", label: "Delivery", Icon: TruckFast },
+  { value: "shield-check", label: "Secure", Icon: ShieldCheck },
+  { value: "headphones", label: "Support", Icon: Phone },
+  { value: "rotate-ccw", label: "Returns", Icon: ArrowPath },
+  { value: "credit-card", label: "Payment", Icon: CreditCard },
+  { value: "lock", label: "Privacy", Icon: LockClosedSolid },
+  { value: "gift", label: "Gift", Icon: Gift },
+  { value: "tag", label: "Deals", Icon: Tag },
+  { value: "clock", label: "Fast Service", Icon: Clock },
+  { value: "star", label: "Quality", Icon: Star },
+  { value: "heart", label: "Care", Icon: Heart },
+  { value: "sparkles", label: "Premium", Icon: Sparkles },
+  { value: "shopping-bag", label: "Shopping", Icon: ShoppingBag },
+  { value: "receipt-percent", label: "Discounts", Icon: ReceiptPercent },
+  { value: "globe", label: "Worldwide", Icon: Globe },
+  { value: "chat", label: "Chat", Icon: ChatBubbleLeftRight },
+  { value: "archive", label: "Archive", Icon: ArchiveBox },
+  { value: "bell", label: "Alerts", Icon: BellAlert },
+  { value: "calendar", label: "Schedule", Icon: Calendar },
+  { value: "chart", label: "Growth", Icon: ChartBar },
+  { value: "cube", label: "Inventory", Icon: CubeSolid },
+  { value: "document", label: "Documents", Icon: DocumentText },
+  { value: "eye", label: "Visibility", Icon: Eye },
+  { value: "fire", label: "Hot Deals", Icon: Fire },
+  { value: "inbox", label: "Inbox", Icon: InboxSolid },
+  { value: "lifebuoy", label: "Help", Icon: Lifebuoy },
+  { value: "lightbulb", label: "Ideas", Icon: LightBulb },
+  { value: "map-pin", label: "Location", Icon: MapPin },
+  { value: "puzzle", label: "Solutions", Icon: Puzzle },
+  { value: "rocket", label: "Launch", Icon: RocketLaunch },
+  { value: "target", label: "Goals", Icon: Target },
+  { value: "wrench", label: "Service", Icon: Wrench },
+]
+
+export const benefitIconMap = benefitIconOptions.reduce(
+  (icons, option) => ({ ...icons, [option.value]: option.Icon }),
+  {} as Record<string, IconComponent>
+)

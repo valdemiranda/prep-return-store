@@ -1,0 +1,32 @@
+import { Heading } from "@modules/common/components/ui"
+
+import ItemsPreviewTemplate from "@modules/cart/templates/preview"
+import DiscountCode from "@modules/checkout/components/discount-code"
+import CartTotals from "@modules/common/components/cart-totals"
+import Divider from "@modules/common/components/divider"
+import { HttpTypes } from "@medusajs/types"
+
+const CheckoutSummary = ({ cart }: { cart: HttpTypes.StoreCart }) => {
+  return (
+    <div className="sticky top-0 flex flex-col-reverse small:flex-col gap-y-8 py-8 small:py-0 ">
+      <div className="w-full bg-white border border-outline-variant p-6 rounded-sm hover:shadow-md transition-all flex flex-col">
+        <Divider className="my-6 small:hidden" />
+        <Heading
+          level="h2"
+          className="font-headline text-2xl font-extrabold uppercase text-on-surface tracking-tight flex flex-row items-baseline pb-4 border-b border-surface-container-highest"
+        >
+          In your Cart
+        </Heading>
+        <div className="mt-6">
+          <CartTotals totals={cart} />
+        </div>
+        <ItemsPreviewTemplate cart={cart} />
+        <div className="my-6">
+          <DiscountCode cart={cart} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default CheckoutSummary

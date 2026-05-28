@@ -1,0 +1,78 @@
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: __BACKEND_URL__ ?? "/",
+  auth: {
+    type: __AUTH_TYPE__ ?? "session",
+    jwtTokenStorageKey: __JWT_TOKEN_STORAGE_KEY__ || undefined,
+  },
+})
+
+export interface HeroContent {
+  backgroundImage: string
+  imageAlt: string
+  eyebrow: string
+  title: string
+  subtitle: string
+  primaryCtaLabel: string
+  primaryCtaLink: string
+  secondaryCtaLabel: string
+  secondaryCtaLink: string
+}
+
+export interface BenefitCard {
+  icon: string
+  title: string
+  subtitle: string
+}
+
+export interface PromotionalBanner {
+  image: string
+  ctaLink: string
+  accessibilityLabel: string
+}
+
+export interface StaticPages {
+  support: string
+  termsOfUse: string
+  privacy: string
+  returnPolicy: string
+}
+
+export interface StoreContent {
+  hero: HeroContent
+  benefitCards: BenefitCard[]
+  promotionalBanners: PromotionalBanner[]
+  staticPages: StaticPages
+}
+
+export const getStoreContent = async (): Promise<StoreContent> => {
+  const data = await sdk.client.fetch<{ store_content: StoreContent }>(
+    "/admin/store-content"
+  )
+  return data.store_content
+}
+
+export const updateStoreContent = async (
+  storeContent: StoreContent
+): Promise<StoreContent> => {
+  const data = await sdk.client.fetch<{ store_content: StoreContent }>(
+    "/admin/store-content",
+    {
+      method: "PUT",
+      body: { store_content: storeContent },
+    }
+  )
+  return data.store_content
+}
+
+export const uploadImage = async (file: File): Promise<string> => {
+  const { files } = await sdk.admin.upload.create({ files: [file] })
+  const uploaded = files[0]
+
+  if (!uploaded?.url) {
+    throw new Error("Upload finished without a file URL")
+  }
+
+  return uploaded.url
+}
