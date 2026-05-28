@@ -52,10 +52,10 @@ export default function PriceFilter({
               const val = Math.max(minPrice, Math.min(maxPrice, Number(e.target.value)))
               setTempMin(val)
             }}
-            className="w-full bg-surface-container border border-outline-variant text-xs px-2 py-1.5 rounded-[4px] text-on-surface focus:ring-1 focus:ring-primary focus:outline-none"
+            className="w-full bg-surface-container border border-outline-variant text-xs px-2 py-2 rounded-[4px] text-on-surface focus:ring-1 focus:ring-primary focus:outline-none"
           />
         </div>
-        <div className="self-end pb-2.5 text-on-surface-variant font-bold">-</div>
+        <div className="self-end pb-2 text-on-surface-variant font-bold">-</div>
         <div className="flex-1">
           <label className="text-[10px] text-on-surface-variant uppercase font-bold block mb-1">Max</label>
           <input
@@ -67,7 +67,7 @@ export default function PriceFilter({
               const val = Math.min(maxPrice, Math.max(minPrice, Number(e.target.value)))
               setTempMax(val)
             }}
-            className="w-full bg-surface-container border border-outline-variant text-xs px-2 py-1.5 rounded-[4px] text-on-surface focus:ring-1 focus:ring-primary focus:outline-none"
+            className="w-full bg-surface-container border border-outline-variant text-xs px-2 py-2 rounded-[4px] text-on-surface focus:ring-1 focus:ring-primary focus:outline-none"
           />
         </div>
       </div>
@@ -108,7 +108,7 @@ export default function PriceFilter({
 
       <button
         onClick={handleApply}
-        className="w-full py-2 bg-primary hover:bg-primary-container text-white font-bold rounded-[4px] transition-all active:scale-[0.98] text-center text-xs uppercase tracking-wider"
+        className="w-full py-2.5 bg-primary hover:bg-primary-container text-white font-bold rounded-[4px] transition-all active:scale-[0.98] text-center text-xs uppercase tracking-wider"
       >
         Apply Price Filter
       </button>

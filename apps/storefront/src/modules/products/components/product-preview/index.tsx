@@ -31,7 +31,7 @@ export default function ProductPreview({
   return (
     <div
       data-testid="product-wrapper"
-      className="group relative bg-white border border-outline-variant rounded-sm p-4 flex flex-col justify-between h-full hover:shadow-md transition-all duration-200"
+      className="group relative bg-white border border-outline-variant rounded-sm p-3 sm:p-4 flex flex-col justify-between h-full hover:shadow-md transition-all duration-200"
     >
       {isSale && (
         <span className="absolute top-2 left-2 z-10 bg-primary text-white font-bold px-2 py-0.5 rounded-[2px] text-[10px] uppercase tracking-wider">
@@ -51,37 +51,41 @@ export default function ProductPreview({
         </div>
       </LocalizedClientLink>
 
-      <div className="flex flex-col flex-grow justify-between mt-4">
+      <div className="flex flex-col flex-grow justify-between mt-3 sm:mt-4">
         <div className="flex flex-col gap-1">
-          {product.collection && (
-            <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">
-              {product.collection.title}
-            </span>
-          )}
+          <div className="h-4 overflow-hidden">
+            {product.collection && (
+              <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider block truncate">
+                {product.collection.title}
+              </span>
+            )}
+          </div>
           <div className="flex flex-col gap-2">
             <LocalizedClientLink href={`/products/${product.handle}`} className="block w-full">
               <h3
-                className="font-bold text-sm text-on-surface group-hover:text-primary transition-colors break-words"
+                className="font-bold text-xs sm:text-sm text-on-surface group-hover:text-primary transition-colors break-words line-clamp-2 h-10 leading-snug"
                 data-testid="product-title"
               >
                 {product.title}
               </h3>
             </LocalizedClientLink>
             {cheapestPrice && (
-              <div className="flex justify-center">
+              <div className="flex justify-center h-6 items-center">
                 <PreviewPrice price={cheapestPrice} />
               </div>
             )}
           </div>
         </div>
 
-        <div className="mt-4 flex flex-col gap-2">
-          {(product.variants?.length ?? 0) <= 1 && cheapestVariant?.id && (
+        <div className="mt-3 sm:mt-4 flex flex-col gap-1.5">
+          {(product.variants?.length ?? 0) <= 1 && cheapestVariant?.id ? (
             <AddToCartButton variantId={cheapestVariant.id} />
+          ) : (
+            <div className="hidden sm:block h-10" />
           )}
-          <LocalizedClientLink href={`/products/${product.handle}`}>
+          <LocalizedClientLink href={`/products/${product.handle}`} className="w-full">
             <span
-              className="w-full block border border-outline text-on-surface hover:bg-surface-container font-bold py-2 text-center text-xs rounded-[4px] transition-colors uppercase tracking-wider"
+              className="w-full block border border-outline text-on-surface hover:bg-surface-container font-bold py-2 text-center text-xs rounded-[4px] transition-colors uppercase tracking-wider min-h-[40px] flex items-center justify-center"
             >
               Details
             </span>

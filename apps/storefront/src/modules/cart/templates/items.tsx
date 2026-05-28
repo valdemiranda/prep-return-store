@@ -19,7 +19,7 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
         </Heading>
       </div>
       <Table>
-        <Table.Header className="border-t-0">
+        <Table.Header className="hidden border-t-0 small:table-header-group">
           <Table.Row className="text-ui-fg-subtle txt-medium-plus">
             <Table.HeaderCell className="!pl-0">Item</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>

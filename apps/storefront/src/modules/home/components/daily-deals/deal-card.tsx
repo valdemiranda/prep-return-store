@@ -46,12 +46,12 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
 
   if (index === 0) {
     return (
-      <div className="group relative flex flex-col justify-between overflow-hidden rounded-soft border border-outline-variant bg-white p-stack-md transition-all duration-200 hover:shadow-md md:col-span-2 md:row-span-2">
+      <div className="group relative flex flex-col justify-between overflow-hidden rounded-soft border border-outline-variant bg-white p-4 sm:p-6 transition-all duration-200 hover:shadow-md sm:col-span-2 md:col-span-2 md:row-span-2">
         <span className="absolute left-4 top-4 z-20 rounded-[2px] bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
           {discountLabel(price)}
         </span>
         <LocalizedClientLink href={href}>
-          <ProductImage product={product} className="flex h-64 md:h-80 shrink-0 items-center justify-center overflow-hidden rounded-soft bg-surface-container-low" />
+          <ProductImage product={product} className="flex h-56 sm:h-64 md:h-80 shrink-0 items-center justify-center overflow-hidden rounded-soft bg-surface-container-low" />
         </LocalizedClientLink>
         <div className="mt-4 flex flex-grow flex-col justify-end">
           <LocalizedClientLink href={href}>
@@ -71,7 +71,7 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
             {canDirectAddToCart && <AddToCartButton variantId={cheapestVariantId} />}
             <LocalizedClientLink
               href={href}
-              className="block w-full rounded-[4px] bg-secondary py-3 text-center text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-secondary/90"
+              className="block w-full rounded-[4px] bg-secondary py-3 text-center text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-secondary/90 min-h-[44px] flex items-center justify-center"
             >
               View product
             </LocalizedClientLink>
@@ -83,17 +83,17 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
 
   if (index === 3 && total === 4) {
     return (
-      <div className="group relative flex items-center gap-6 overflow-hidden rounded-soft border border-outline-variant bg-surface-container-low p-6 transition-all duration-200 hover:shadow-md md:col-span-2">
-        <LocalizedClientLink href={href} className="w-1/3 shrink-0">
-          <ProductImage product={product} className="flex h-32 md:h-40 items-center justify-center overflow-hidden rounded-soft bg-white" />
+      <div className="group relative flex flex-col sm:flex-row items-center gap-4 sm:gap-6 overflow-hidden rounded-soft border border-outline-variant bg-surface-container-low p-4 sm:p-6 transition-all duration-200 hover:shadow-md sm:col-span-2 md:col-span-2">
+        <LocalizedClientLink href={href} className="w-full sm:w-1/3 shrink-0">
+          <ProductImage product={product} className="flex h-48 sm:h-32 md:h-40 items-center justify-center overflow-hidden rounded-soft bg-white" />
         </LocalizedClientLink>
-        <div className="flex h-full min-w-0 flex-1 flex-col justify-between">
+        <div className="flex h-full min-w-0 flex-1 flex-col justify-between w-full mt-3 sm:mt-0">
           <div>
             <span className="mb-2 inline-block rounded-[2px] bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
               Limited stock
             </span>
             <LocalizedClientLink href={href}>
-              <h3 className="mb-1 line-clamp-1 font-headline text-lg text-on-surface transition-colors group-hover:text-primary md:text-xl">
+              <h3 className="mb-1 line-clamp-2 font-headline text-lg text-on-surface transition-colors group-hover:text-primary md:text-xl">
                 {product.title}
               </h3>
             </LocalizedClientLink>
@@ -113,12 +113,12 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
   }
 
   return (
-    <div className="group relative flex flex-col justify-between overflow-hidden rounded-soft border border-outline-variant bg-white p-stack-md transition-all duration-200 hover:shadow-md">
+    <div className="group relative flex flex-col justify-between overflow-hidden rounded-soft border border-outline-variant bg-white p-4 sm:p-6 transition-all duration-200 hover:shadow-md">
       <span className="absolute left-4 top-4 z-20 rounded-[2px] bg-secondary px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
         {discountLabel(price)}
       </span>
       <LocalizedClientLink href={href}>
-        <ProductImage product={product} className="flex h-40 md:h-48 shrink-0 items-center justify-center overflow-hidden rounded-soft bg-surface-container-low" />
+        <ProductImage product={product} className="flex h-48 sm:h-40 md:h-48 shrink-0 items-center justify-center overflow-hidden rounded-soft bg-surface-container-low" />
       </LocalizedClientLink>
       <div className="mt-4 flex flex-grow flex-col justify-end">
         <LocalizedClientLink href={href}>
@@ -133,7 +133,7 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
           {canDirectAddToCart && <AddToCartButton variantId={cheapestVariantId} />}
           <LocalizedClientLink
             href={href}
-            className="block w-full rounded-[4px] border border-secondary py-2 text-center text-xs font-bold uppercase tracking-wider text-secondary transition-colors hover:bg-secondary/10"
+            className="block w-full rounded-[4px] border border-secondary py-2 text-center text-xs font-bold uppercase tracking-wider text-secondary transition-colors hover:bg-secondary/10 min-h-[36px] flex items-center justify-center"
           >
             Details
           </LocalizedClientLink>

@@ -78,7 +78,7 @@ const Hero = ({
   benefitCards: BenefitCard[]
 }) => {
   return (
-    <section className="relative w-full min-h-[620px] md:min-h-[500px] md:h-[580px] overflow-hidden bg-primary-container flex flex-col justify-between p-6 md:p-8 max-w-container-max mx-auto mt-4 rounded-sm">
+    <section className="relative w-full min-h-[520px] md:h-[580px] overflow-hidden bg-primary-container flex flex-col justify-between p-5 md:p-8 max-w-container-max mx-auto mt-4 rounded-sm">
       {content.backgroundImage && (
         <div className="absolute inset-0 z-0">
           <img
@@ -89,14 +89,42 @@ const Hero = ({
         </div>
       )}
 
-      <div className="relative z-10 w-full grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      {/* Hero Content on top/middle */}
+      <div className="relative z-10 max-w-2xl text-white my-auto pt-4 pb-6">
+        <div className="bg-white text-primary px-3 py-1 inline-block font-bold mb-3 md:mb-4 rounded-[2px] text-xs tracking-wider">
+          {content.eyebrow}
+        </div>
+        <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-black mb-3 md:mb-4 tracking-tight leading-tight uppercase">
+          {content.title}
+        </h1>
+        <p className="font-sans text-sm sm:text-base md:text-lg mb-6 md:mb-8 text-white/90 max-w-lg">
+          {content.subtitle}
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <LocalizedClientLink
+            href={content.primaryCtaLink}
+            className="bg-white text-primary px-8 py-3 text-sm rounded-[4px] hover:scale-105 active:scale-95 transition-all shadow-md inline-block text-center font-bold uppercase tracking-wider min-h-[44px] flex items-center justify-center"
+          >
+            {content.primaryCtaLabel}
+          </LocalizedClientLink>
+          <LocalizedClientLink
+            href={content.secondaryCtaLink}
+            className="border-2 border-white text-white px-8 py-3 text-sm rounded-[4px] hover:bg-white/10 active:scale-95 transition-all inline-block text-center font-bold uppercase tracking-wider min-h-[44px] flex items-center justify-center"
+          >
+            {content.secondaryCtaLabel}
+          </LocalizedClientLink>
+        </div>
+      </div>
+
+      {/* Benefit Cards at the bottom (horizontally scrollable on mobile) */}
+      <div className="relative z-10 w-full flex md:grid md:grid-cols-4 gap-3 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 scrollbar-none snap-x snap-mandatory mt-4 md:mt-0">
         {benefitCards.map((card) => {
           const Icon = cardIcons[card.icon as keyof typeof cardIcons] ?? Truck
 
           return (
             <div
               key={`${card.icon}-${card.title}`}
-              className="flex items-center gap-3 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-[2px] transition-all hover:bg-white/15"
+              className="flex items-center gap-3 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-[2px] transition-all hover:bg-white/15 shrink-0 w-[240px] md:w-auto snap-start"
             >
               <Icon className="text-white w-6 h-6 shrink-0" />
               <div>
@@ -108,32 +136,6 @@ const Hero = ({
             </div>
           )
         })}
-      </div>
-
-      <div className="relative z-10 max-w-2xl text-white my-auto pt-4 pb-4">
-        <div className="bg-white text-primary px-3 py-1 inline-block font-bold mb-4 rounded-[2px] text-xs tracking-wider">
-          {content.eyebrow}
-        </div>
-        <h1 className="font-display text-4xl md:text-5xl font-black mb-4 tracking-tight leading-tight uppercase">
-          {content.title}
-        </h1>
-        <p className="font-sans text-base md:text-lg mb-8 text-white/90 max-w-lg">
-          {content.subtitle}
-        </p>
-        <div className="flex gap-4">
-          <LocalizedClientLink
-            href={content.primaryCtaLink}
-            className="bg-white text-primary px-8 py-3 text-sm rounded-[4px] hover:scale-105 active:scale-95 transition-all shadow-md inline-block text-center font-bold uppercase tracking-wider"
-          >
-            {content.primaryCtaLabel}
-          </LocalizedClientLink>
-          <LocalizedClientLink
-            href={content.secondaryCtaLink}
-            className="border-2 border-white text-white px-8 py-3 text-sm rounded-[4px] hover:bg-white/10 active:scale-95 transition-all inline-block text-center font-bold uppercase tracking-wider"
-          >
-            {content.secondaryCtaLabel}
-          </LocalizedClientLink>
-        </div>
       </div>
     </section>
   )

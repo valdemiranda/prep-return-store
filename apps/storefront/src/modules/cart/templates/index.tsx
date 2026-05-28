@@ -55,7 +55,7 @@ const CartTemplate = ({
             </div>
             
             <div className="grid grid-cols-1 small:grid-cols-[1fr_380px] gap-8 items-start">
-              <div className="flex flex-col bg-white border border-outline-variant p-6 rounded-sm hover:shadow-sm transition-all gap-y-6">
+              <div className="flex flex-col bg-white border border-outline-variant p-4 small:p-6 rounded-sm hover:shadow-sm transition-all gap-y-6">
                 {!customer && (
                   <>
                     <SignInPrompt />

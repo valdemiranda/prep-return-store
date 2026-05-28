@@ -8,7 +8,10 @@ import RandomProductsCarousel from "@modules/home/components/random-products-car
 import PromotionalBannerCarousel from "@modules/home/components/promotional-banner-carousel"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
-import { getStoreContent } from "@lib/data/store-content"
+import {
+  DEFAULT_STORE_CONTENT,
+  getStoreContent,
+} from "@lib/data/store-content"
 
 export const metadata: Metadata = {
   title: "One Stop Liquidation",
@@ -25,7 +28,7 @@ export default async function Home(props: {
 
   const region = await getRegion(countryCode)
 
-  const [{ collections }, storeContent] = await Promise.all([
+  const [{ collections }, loadedStoreContent] = await Promise.all([
     listCollections({
       fields: "id, handle, title",
     }),
@@ -35,6 +38,8 @@ export default async function Home(props: {
   if (!collections || !region) {
     return null
   }
+
+  const storeContent = loadedStoreContent ?? DEFAULT_STORE_CONTENT
 
   return (
     <>

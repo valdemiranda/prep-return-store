@@ -28,7 +28,7 @@ export default function AddToCartButton({ variantId }: { variantId: string }) {
       onClick={handleAdd}
       type="button"
       variant="primary"
-      className="w-full uppercase font-bold text-xs tracking-wider py-2 h-9"
+      className="w-full uppercase font-bold text-xs tracking-wider py-2.5 h-10"
       isLoading={isAdding}
     >
       Add to cart

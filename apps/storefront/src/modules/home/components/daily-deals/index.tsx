@@ -82,7 +82,7 @@ export default async function DailyDeals({ countryCode }: { countryCode: string 
         </LocalizedClientLink>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter h-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-gutter h-auto">
         {selected.map(({ product, cheapestPrice }, index) => (
           <DealCard
             index={index}
