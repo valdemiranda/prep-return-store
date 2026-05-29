@@ -65,11 +65,11 @@ module.exports = {
         "stack-sm": "8px",
         unit: "8px",
         gutter: "24px",
-        "container-max": "1280px",
+        "container-max": "1920px",
       },
       maxWidth: {
         "8xl": "100rem",
-        "container-max": "1280px",
+        "container-max": "1920px",
       },
       screens: {
         "2xsmall": "320px",
