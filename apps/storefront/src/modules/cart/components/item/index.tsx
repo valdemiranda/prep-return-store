@@ -15,10 +15,20 @@ type ItemProps = {
   currencyCode: string
 }
 
+// Upper bound for items that don't track inventory (or allow backorders),
+// to keep the quantity selector reasonable.
+const MAX_QUANTITY = 10
+
 const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
-  // TODO: Update this to grab the actual max inventory
-  const maxQtyFromInventory = 10
-  const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
+  const variant = item.variant
+
+  // Quando o estoque não é gerenciado ou backorder é permitido, não há limite
+  // real de estoque — usamos um teto razoável. Caso contrário, o máximo é a
+  // quantidade efetivamente disponível em estoque.
+  const maxQuantity =
+    !variant?.manage_inventory || variant?.allow_backorder
+      ? MAX_QUANTITY
+      : variant?.inventory_quantity ?? 0
 
   const isFull = type === "full"
 
