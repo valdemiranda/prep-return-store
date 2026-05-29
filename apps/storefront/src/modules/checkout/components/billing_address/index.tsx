@@ -1,6 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import Input from "@modules/common/components/input"
 import React, { useState } from "react"
+import AddressStateField from "../address-state-field"
 import CountrySelect from "../country-select"
 
 const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
@@ -19,7 +20,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLInputElement | HTMLSelectElement
-    >
+    >,
   ) => {
     setFormData({
       ...formData,
@@ -90,10 +91,9 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           required
           data-testid="billing-country-select"
         />
-        <Input
-          label="State / Province"
+        <AddressStateField
           name="billing_address.province"
-          autoComplete="address-level1"
+          countryCode={formData["billing_address.country_code"]}
           value={formData["billing_address.province"]}
           onChange={handleChange}
           data-testid="billing-province-input"
