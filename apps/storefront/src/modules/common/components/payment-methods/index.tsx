@@ -11,15 +11,15 @@ export default function PaymentMethods({ className }: { className?: string }) {
         Accepted payments
       </span>
       <Image
-        src="/payment/accepted-payment-methods.png"
-        alt="Accepted payment methods: credit cards via Stripe and PayPal"
-        width={964}
-        height={167}
-        className="h-10 w-auto max-w-[min(100%,260px)] object-contain md:h-12 md:max-w-[320px]"
+        src="/payment/accepted-payment-methods-v2.png"
+        alt="Accepted payment methods: Visa, Mastercard, American Express, Discover, and PayPal"
+        width={1036}
+        height={170}
+        className="h-10 w-auto max-w-[min(100%,300px)] object-contain md:h-12 md:max-w-[360px]"
       />
       <span className="sr-only">
-        We accept Visa, Mastercard, American Express, and PayPal. Credit card
-        payments are processed via Stripe.
+        We accept Visa, Mastercard, American Express, Discover, and PayPal.
+        Credit card payments are processed via Stripe.
       </span>
     </div>
   )
