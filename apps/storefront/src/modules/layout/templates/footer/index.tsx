@@ -8,6 +8,7 @@ import { Send, Globe, Mail, MessageSquare } from "lucide-react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import BrandLogo from "@modules/layout/components/brand-logo"
 import InstitutionalLinks from "./institutional-links"
+import PaymentMethods from "@modules/common/components/payment-methods"
 
 export default async function Footer({
   countryCode,
@@ -109,11 +110,12 @@ export default async function Footer({
         </div>
       </div>
 
-      <div className="border-t border-surface-container-highest mt-12 pt-6 text-center text-xs text-on-surface-variant">
-        <p>
+      <div className="border-t border-surface-container-highest mt-12 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant">
+        <p className="text-center md:text-left">
           © {new Date().getFullYear()} One Stop Liquidation. All rights
           reserved. Unbeatable volume pricing.
         </p>
+        <PaymentMethods />
       </div>
     </footer>
   )
