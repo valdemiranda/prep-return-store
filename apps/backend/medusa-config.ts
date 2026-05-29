@@ -3,6 +3,22 @@ import { loadEnv, defineConfig } from "@medusajs/framework/utils";
 loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
 const redisUrl = process.env.REDIS_URL;
+const paypalPaymentProvider =
+  process.env.PAYPAL_CLIENT_ID && process.env.PAYPAL_CLIENT_SECRET
+    ? [
+        {
+          resolve: "./src/modules/paypal",
+          id: "paypal",
+          options: {
+            client_id: process.env.PAYPAL_CLIENT_ID,
+            client_secret: process.env.PAYPAL_CLIENT_SECRET,
+            environment: process.env.PAYPAL_ENVIRONMENT || "sandbox",
+            autoCapture: process.env.PAYPAL_AUTO_CAPTURE === "true",
+            webhook_id: process.env.PAYPAL_WEBHOOK_ID,
+          },
+        },
+      ]
+    : [];
 const r2FileModule =
   process.env.CLOUDFLARE_R2_BUCKET &&
   process.env.CLOUDFLARE_R2_ACCESS_KEY_ID &&
@@ -91,6 +107,7 @@ module.exports = defineConfig({
                 process.env.STRIPE_AUTOMATIC_PAYMENT_METHODS === "true",
             },
           },
+          ...paypalPaymentProvider,
         ],
       },
     },
