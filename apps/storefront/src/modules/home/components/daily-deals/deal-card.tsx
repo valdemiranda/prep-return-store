@@ -55,7 +55,7 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
         </LocalizedClientLink>
         <div className="mt-4 flex flex-grow flex-col justify-end">
           <LocalizedClientLink href={href}>
-            <h3 className="mb-2 line-clamp-2 font-headline text-headline-md text-on-surface transition-colors group-hover:text-primary">
+            <h3 className="mb-2 break-words font-headline text-headline-md text-on-surface transition-colors group-hover:text-primary">
               {product.title}
             </h3>
           </LocalizedClientLink>
@@ -93,7 +93,7 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
               Limited stock
             </span>
             <LocalizedClientLink href={href}>
-              <h3 className="mb-1 line-clamp-2 font-headline text-lg text-on-surface transition-colors group-hover:text-primary md:text-xl">
+              <h3 className="mb-1 break-words font-headline text-lg text-on-surface transition-colors group-hover:text-primary md:text-xl">
                 {product.title}
               </h3>
             </LocalizedClientLink>
@@ -122,7 +122,7 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
       </LocalizedClientLink>
       <div className="mt-4 flex flex-grow flex-col justify-end">
         <LocalizedClientLink href={href}>
-          <h3 className="mb-1 w-full truncate text-sm font-bold text-on-surface transition-colors group-hover:text-primary">
+          <h3 className="mb-1 w-full break-words text-sm font-bold text-on-surface transition-colors group-hover:text-primary">
             {product.title}
           </h3>
         </LocalizedClientLink>

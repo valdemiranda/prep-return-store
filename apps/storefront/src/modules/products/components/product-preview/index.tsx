@@ -63,7 +63,7 @@ export default function ProductPreview({
           <div className="flex flex-col gap-2">
             <LocalizedClientLink href={`/products/${product.handle}`} className="block w-full">
               <h3
-                className="font-bold text-xs sm:text-sm text-on-surface group-hover:text-primary transition-colors break-words line-clamp-2 h-10 leading-snug"
+                className="font-bold text-xs sm:text-sm text-on-surface group-hover:text-primary transition-colors break-words min-h-10 leading-snug"
                 data-testid="product-title"
               >
                 {product.title}
