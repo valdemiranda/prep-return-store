@@ -7,7 +7,12 @@ import ProductActions from "@modules/products/components/product-actions"
 import ProductTabs from "@modules/products/components/product-tabs"
 import RelatedProducts from "@modules/products/components/related-products"
 import ProductBreadcrumbs from "@modules/products/components/product-breadcrumbs"
-import ProductSpecifications from "@modules/products/components/product-specifications"
+import ProductBrand from "@modules/products/components/product-brand"
+import ProductCondition from "@modules/products/components/product-condition"
+import ProductKeyFeatures from "@modules/products/components/product-key-features"
+import ProductShare from "@modules/products/components/product-share"
+import ProductTrustBadges from "@modules/products/components/product-trust-badges"
+import ProductStockIndicator from "@modules/products/components/product-stock-indicator"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
 import ProductActionsWrapper from "./product-actions-wrapper"
 
@@ -42,12 +47,16 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-[2px] text-xs font-bold bg-primary text-white uppercase tracking-wider">
               Stock Liquidation
             </span>
+            <ProductBrand product={product} />
             <h1 className="font-headline text-3xl font-extrabold uppercase text-on-surface tracking-tight leading-tight">
               {product.title}
             </h1>
-            <div className="flex items-center gap-4 text-on-surface-variant font-sans text-xs">
+            <ProductCondition product={product} />
+            <div className="flex items-center justify-between gap-4 text-on-surface-variant font-sans text-xs">
               <span>SKU: {product.variants?.[0]?.sku || "LQD-PRD-GEN"}</span>
+              <ProductShare product={product} />
             </div>
+            <ProductStockIndicator product={product} />
           </div>
 
           <Suspense
@@ -61,12 +70,15 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           >
             <ProductActionsWrapper id={product.id} region={region} />
           </Suspense>
+          <ProductTrustBadges />
         </div>
       </div>
 
       {/* Bottom Grid: Description and Tabs */}
       <div className="mt-12 pt-12 border-t border-outline-variant grid grid-cols-1 small:grid-cols-12 gap-gutter">
         <div className="w-full small:col-span-8 space-y-8 font-sans">
+          <ProductKeyFeatures product={product} />
+
           <section className="space-y-4">
             <h2 className="font-headline text-2xl font-bold border-l-4 border-primary pl-4 uppercase tracking-tight text-on-surface">
               Product Description
@@ -75,8 +87,6 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
               {product.description || "No description available."}
             </p>
           </section>
-
-          <ProductSpecifications product={product} />
         </div>
 
         <div className="w-full small:col-span-4 space-y-6">
@@ -94,3 +104,4 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 }
 
 export default ProductTemplate
+
