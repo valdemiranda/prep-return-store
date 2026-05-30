@@ -3,15 +3,15 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import { ChevronRight } from "lucide-react"
 
 const ProductBreadcrumbs = ({ product }: { product: HttpTypes.StoreProduct }) => {
-  const parent = product.collection
-    ? {
-        href: `/collections/${product.collection.handle}`,
-        label: product.collection.title,
-      }
-    : product.categories?.[0]
+  const parent = product.categories?.[0]
     ? {
         href: `/categories/${product.categories[0].handle}`,
         label: product.categories[0].name,
+      }
+    : product.collection
+    ? {
+        href: `/collections/${product.collection.handle}`,
+        label: product.collection.title,
       }
     : { href: "/store", label: "Deals" }
 
