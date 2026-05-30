@@ -18,9 +18,7 @@ export default function PromotionalBannerCarousel({
   }, [slides.length])
 
   const handlePrev = useCallback(() => {
-    setActiveIndex(
-      (prev) => (prev - 1 + slides.length) % slides.length
-    )
+    setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length)
   }, [slides.length])
 
   useEffect(() => {
@@ -35,7 +33,7 @@ export default function PromotionalBannerCarousel({
 
   return (
     <section
-      className="relative w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter mb-16 font-sans group/carousel"
+      className="relative w-full mb-16 font-sans group/carousel"
       aria-roledescription="carousel"
       aria-label="Promotional banner carousel"
       onMouseEnter={() => setIsPlaying(false)}

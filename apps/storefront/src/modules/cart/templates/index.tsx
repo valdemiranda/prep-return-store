@@ -14,7 +14,10 @@ const CartTemplate = ({
 }) => {
   return (
     <div className="bg-surface py-8 small:py-12">
-      <div className="content-container" data-testid="cart-container">
+      <div
+        className="max-w-[1280px] w-full mx-auto px-margin-mobile md:px-gutter"
+        data-testid="cart-container"
+      >
         {cart?.items?.length ? (
           <div className="flex flex-col gap-6">
             <nav className="mx-auto mb-2 flex w-full max-w-2xl items-center justify-between px-4">

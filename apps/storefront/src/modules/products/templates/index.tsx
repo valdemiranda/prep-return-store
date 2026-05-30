@@ -34,67 +34,72 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   }
 
   return (
-    <div className="content-container py-8" data-testid="product-container">
-      <ProductBreadcrumbs product={product} />
+    <div data-testid="product-container">
+      <div className="max-w-[1280px] w-full mx-auto px-margin-mobile md:px-gutter py-8">
+        <ProductBreadcrumbs product={product} />
 
-      <div className="grid grid-cols-1 small:grid-cols-12 gap-gutter items-start">
-        <div className="w-full small:col-span-7">
-          <ImageGallery images={images} />
-        </div>
-
-        <div className="w-full small:col-span-5 space-y-6">
-          <div className="space-y-2">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-[2px] text-xs font-bold bg-primary text-white uppercase tracking-wider">
-              Stock Liquidation
-            </span>
-            <ProductBrand product={product} />
-            <h1 className="font-headline text-3xl font-extrabold uppercase text-on-surface tracking-tight leading-tight">
-              {product.title}
-            </h1>
-            <ProductCondition product={product} />
-            <div className="flex items-center justify-between gap-4 text-on-surface-variant font-sans text-xs">
-              <span>SKU: {product.variants?.[0]?.sku || "LQD-PRD-GEN"}</span>
-              <ProductShare product={product} />
-            </div>
-            <ProductStockIndicator product={product} />
+        <div className="grid grid-cols-1 small:grid-cols-12 gap-gutter items-start">
+          <div className="w-full small:col-span-7">
+            <ImageGallery images={images} />
           </div>
 
-          <Suspense
-            fallback={
-              <ProductActions
-                disabled={true}
-                product={product}
-                region={region}
-              />
-            }
-          >
-            <ProductActionsWrapper id={product.id} region={region} />
-          </Suspense>
-          <ProductTrustBadges />
+          <div className="w-full small:col-span-5 space-y-6">
+            <div className="space-y-2">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-[2px] text-xs font-bold bg-primary text-white uppercase tracking-wider">
+                Stock Liquidation
+              </span>
+              <ProductBrand product={product} />
+              <h1 className="font-headline text-3xl font-extrabold uppercase text-on-surface tracking-tight leading-tight">
+                {product.title}
+              </h1>
+              <ProductCondition product={product} />
+              <div className="flex items-center justify-between gap-4 text-on-surface-variant font-sans text-xs">
+                <span>SKU: {product.variants?.[0]?.sku || "LQD-PRD-GEN"}</span>
+                <ProductShare product={product} />
+              </div>
+              <ProductStockIndicator product={product} />
+            </div>
+
+            <Suspense
+              fallback={
+                <ProductActions
+                  disabled={true}
+                  product={product}
+                  region={region}
+                />
+              }
+            >
+              <ProductActionsWrapper id={product.id} region={region} />
+            </Suspense>
+            <ProductTrustBadges />
+          </div>
+        </div>
+
+        {/* Bottom Grid: Description and Tabs */}
+        <div className="mt-12 pt-12 border-t border-outline-variant grid grid-cols-1 small:grid-cols-12 gap-gutter">
+          <div className="w-full small:col-span-8 space-y-8 font-sans">
+            <ProductKeyFeatures product={product} />
+
+            <section className="space-y-4">
+              <h2 className="font-headline text-2xl font-bold border-l-4 border-primary pl-4 uppercase tracking-tight text-on-surface">
+                Product Description
+              </h2>
+              <p className="text-on-surface-variant leading-relaxed text-sm whitespace-pre-line">
+                {product.description || "No description available."}
+              </p>
+            </section>
+          </div>
+
+          <div className="w-full small:col-span-4 space-y-6">
+            <ProductTabs product={product} />
+          </div>
         </div>
       </div>
 
-      {/* Bottom Grid: Description and Tabs */}
-      <div className="mt-12 pt-12 border-t border-outline-variant grid grid-cols-1 small:grid-cols-12 gap-gutter">
-        <div className="w-full small:col-span-8 space-y-8 font-sans">
-          <ProductKeyFeatures product={product} />
-
-          <section className="space-y-4">
-            <h2 className="font-headline text-2xl font-bold border-l-4 border-primary pl-4 uppercase tracking-tight text-on-surface">
-              Product Description
-            </h2>
-            <p className="text-on-surface-variant leading-relaxed text-sm whitespace-pre-line">
-              {product.description || "No description available."}
-            </p>
-          </section>
-        </div>
-
-        <div className="w-full small:col-span-4 space-y-6">
-          <ProductTabs product={product} />
-        </div>
-      </div>
-
-      <div className="my-16 small:my-32" data-testid="related-products-container">
+      <div
+        className="content-container my-16 small:my-32"
+        data-testid="related-products-container"
+      >
         <Suspense fallback={<SkeletonRelatedProducts />}>
           <RelatedProducts product={product} countryCode={countryCode} />
         </Suspense>
@@ -104,4 +109,3 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 }
 
 export default ProductTemplate
-
