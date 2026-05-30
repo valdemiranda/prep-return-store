@@ -4,6 +4,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Thumbnail from "../thumbnail"
 import PreviewPrice from "./price"
 import AddToCartButton from "./add-to-cart-button"
+import CompactCondition from "./compact-condition"
 
 export default function ProductPreview({
   product,
@@ -69,6 +70,7 @@ export default function ProductPreview({
                 {product.title}
               </h3>
             </LocalizedClientLink>
+            <CompactCondition product={product} />
             {cheapestPrice && (
               <div className="flex justify-center h-6 items-center">
                 <PreviewPrice price={cheapestPrice} />

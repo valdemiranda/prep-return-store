@@ -2,6 +2,7 @@
 
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
+import { getProductCondition } from "@modules/products/utils/product-metadata"
 import { listProducts } from "./products"
 
 export type SearchProductSuggestion = {
@@ -10,6 +11,7 @@ export type SearchProductSuggestion = {
   title: string
   thumbnail?: string | null
   price: string | null
+  condition: string | null
 }
 
 export async function searchProducts({
@@ -41,6 +43,7 @@ export async function searchProducts({
       title: product.title,
       thumbnail: product.thumbnail,
       price: cheapestPrice?.calculated_price ?? null,
+      condition: getProductCondition(product) ?? null,
     }
   })
 }

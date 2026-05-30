@@ -1,6 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import AddToCartButton from "@modules/products/components/product-preview/add-to-cart-button"
+import CompactCondition from "@modules/products/components/product-preview/compact-condition"
 import { VariantPrice } from "types/global"
 
 type DealCardProps = {
@@ -59,6 +60,7 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
               {product.title}
             </h3>
           </LocalizedClientLink>
+          <CompactCondition product={product} className="mb-2" />
           {price.price_type === "sale" && (
             <p className="mb-1 text-body-sm text-on-surface-variant line-through">
               From: {price.original_price}
@@ -97,6 +99,7 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
                 {product.title}
               </h3>
             </LocalizedClientLink>
+            <CompactCondition product={product} className="mb-2" />
             <p className="mb-2 font-price text-xl font-extrabold text-primary">
               {price.calculated_price}
             </p>
@@ -126,6 +129,7 @@ const DealCard = ({ product, price, index, total }: DealCardProps) => {
             {product.title}
           </h3>
         </LocalizedClientLink>
+        <CompactCondition product={product} className="mb-2" />
         <span className="mb-3 font-price text-lg font-extrabold text-primary">
           {price.calculated_price}
         </span>

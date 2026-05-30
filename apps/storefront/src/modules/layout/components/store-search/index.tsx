@@ -114,11 +114,18 @@ const StoreSearch = () => {
                     <p className="font-bold text-xs text-on-surface truncate">
                       {product.title}
                     </p>
-                    {product.price && (
-                      <p className="text-[10px] text-primary font-price font-extrabold mt-0.5">
-                        {product.price}
-                      </p>
-                    )}
+                    <div className="flex items-center gap-2 mt-0.5">
+                      {product.price && (
+                        <span className="text-[10px] text-primary font-price font-extrabold">
+                          {product.price}
+                        </span>
+                      )}
+                      {product.condition && (
+                        <span className="text-[9px] font-bold uppercase tracking-wider text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded-[2px]">
+                          {product.condition}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </LocalizedClientLink>
               ))}
