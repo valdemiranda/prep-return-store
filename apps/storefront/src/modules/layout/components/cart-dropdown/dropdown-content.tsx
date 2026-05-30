@@ -48,7 +48,8 @@ const DropdownContent = ({ cart, subtotal, onClose }: DropdownContentProps) => {
                 href={`/products/${item.product_handle}`}
               >
                 <Thumbnail
-                  images={item.variant?.product?.images}
+                  images={item.product?.images}
+                  isContain
                   size="square"
                   thumbnail={item.thumbnail}
                 />
@@ -56,7 +57,7 @@ const DropdownContent = ({ cart, subtotal, onClose }: DropdownContentProps) => {
               <div className="flex flex-col justify-between">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
-                    <h3 className="truncate text-sm font-bold text-on-surface">
+                    <h3 className="whitespace-normal break-words text-sm font-bold text-on-surface">
                       <LocalizedClientLink
                         data-testid="product-link"
                         href={`/products/${item.product_handle}`}

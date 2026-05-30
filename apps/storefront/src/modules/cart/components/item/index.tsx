@@ -7,6 +7,7 @@ import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Table, Text, clx } from "@modules/common/components/ui"
 import Thumbnail from "@modules/products/components/thumbnail"
+import { getProductCondition } from "@modules/products/utils/product-metadata"
 import QuantityControl from "./quantity-control"
 
 type ItemProps = {
@@ -21,6 +22,9 @@ const MAX_QUANTITY = 10
 
 const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const variant = item.variant
+  const condition = item.product
+    ? getProductCondition(item.product)
+    : undefined
 
   // Quando o estoque não é gerenciado ou backorder é permitido, não há limite
   // real de estoque — usamos um teto razoável. Caso contrário, o máximo é a
@@ -50,7 +54,8 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         >
           <Thumbnail
             thumbnail={item.thumbnail}
-            images={item.variant?.product?.images}
+            images={item.product?.images}
+            isContain
             size="square"
           />
         </LocalizedClientLink>
@@ -64,6 +69,12 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
           {item.product_title}
         </Text>
         <LineItemOptions variant={item.variant} data-testid="product-variant" />
+        {isFull && condition && (
+          <div className="mt-1 text-xs text-on-surface-variant font-medium uppercase tracking-wide">
+            Condition:{" "}
+            <span className="text-primary font-bold">{condition}</span>
+          </div>
+        )}
 
         {isFull && (
           <div className="mt-1 text-xs small:hidden">

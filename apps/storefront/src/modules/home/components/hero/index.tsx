@@ -117,14 +117,14 @@ const Hero = ({
       </div>
 
       {/* Benefit Cards at the bottom (horizontally scrollable on mobile) */}
-      <div className="relative z-10 w-full flex md:grid md:grid-cols-4 gap-3 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 scrollbar-none snap-x snap-mandatory mt-4 md:mt-0">
+      <div className="relative z-10 w-full flex flex-row gap-3 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 scrollbar-none snap-x snap-mandatory mt-4 md:mt-0 md:flex-wrap md:justify-between">
         {benefitCards.map((card) => {
           const Icon = cardIcons[card.icon as keyof typeof cardIcons] ?? Truck
 
           return (
             <div
               key={`${card.icon}-${card.title}`}
-              className="flex items-center gap-3 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-[2px] transition-all hover:bg-white/15 shrink-0 w-[240px] md:w-auto snap-start"
+              className="flex items-center gap-3 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-[2px] transition-all hover:bg-white/15 shrink-0 w-[240px] snap-start"
             >
               <Icon className="text-white w-6 h-6 shrink-0" />
               <div>
