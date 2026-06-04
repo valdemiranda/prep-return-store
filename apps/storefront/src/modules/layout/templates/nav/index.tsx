@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { User } from "lucide-react"
+import { User, Truck } from "lucide-react"
 
 import { listCollections } from "@lib/data/collections"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -39,6 +39,15 @@ export default async function Nav() {
             <div className="flex md:hidden items-center gap-x-3 shrink-0">
               <LocalizedClientLink
                 className="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 hover:bg-surface-container-low rounded-full min-h-[40px] min-w-[40px]"
+                href="/track-order"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Track Order"
+              >
+                <Truck className="w-5 h-5" />
+              </LocalizedClientLink>
+              <LocalizedClientLink
+                className="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 hover:bg-surface-container-low rounded-full min-h-[40px] min-w-[40px]"
                 href="/account"
                 data-testid="nav-account-link"
               >
@@ -67,6 +76,15 @@ export default async function Nav() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-x-4 flex-1 justify-end shrink-0 order-2 md:order-3">
+            <LocalizedClientLink
+              className="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 hover:bg-surface-container-low rounded-full"
+              href="/track-order"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Track Order"
+            >
+              <Truck className="w-5 h-5" />
+            </LocalizedClientLink>
             <LocalizedClientLink
               className="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 hover:bg-surface-container-low rounded-full"
               href="/account"
