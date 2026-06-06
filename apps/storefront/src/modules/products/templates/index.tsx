@@ -45,9 +45,6 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 
           <div className="w-full small:col-span-5 space-y-6">
             <div className="space-y-2">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-[2px] text-xs font-bold bg-primary text-white uppercase tracking-wider">
-                Stock Liquidation
-              </span>
               <ProductBrand product={product} />
               <h1 className="font-headline text-3xl font-extrabold uppercase text-on-surface tracking-tight leading-tight">
                 {product.title}

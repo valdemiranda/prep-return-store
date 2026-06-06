@@ -13,8 +13,9 @@ export default function ProductBrand({ product }: ProductBrandProps) {
   }
 
   return (
-    <div className="text-xs font-bold uppercase tracking-widest text-on-surface-variant/80">
-      {brand}
+    <div className="flex items-center gap-1 text-xs tracking-wide text-on-surface-variant">
+      <span className="font-semibold">Brand:</span>
+      <span className="font-bold text-on-surface">{brand}</span>
     </div>
   )
 }
