@@ -1,18 +1,11 @@
 import clsx from "clsx"
-import {
-  ClipboardList,
-  Loader2,
-  Package,
-  Truck,
-  CheckCircle2,
-} from "lucide-react"
+import { ClipboardList, Loader2, Package, CheckCircle2 } from "lucide-react"
 import { InternalOrderStatus } from "@lib/data/order-tracking"
 
 const STEPS = [
   { key: "Placed", label: "Placed", icon: ClipboardList },
   { key: "Processing", label: "Processing", icon: Loader2 },
   { key: "Shipped", label: "Shipped", icon: Package },
-  { key: "In transit", label: "In transit", icon: Truck },
   { key: "Delivered", label: "Delivered", icon: CheckCircle2 },
 ]
 

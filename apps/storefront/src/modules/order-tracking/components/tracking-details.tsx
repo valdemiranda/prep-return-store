@@ -12,6 +12,7 @@ export default function TrackingDetails({
   tracking: OrderTracking
 }) {
   const event = tracking.latest_tracking_event
+  const deliveredAt = tracking.delivered_at
   const totalItems = tracking.items.reduce(
     (acc, curr) => acc + getQuantity(curr.quantity),
     0,
@@ -79,6 +80,15 @@ export default function TrackingDetails({
             <p>
               <span className="font-bold">Placed on:</span>{" "}
               {new Date(tracking.placed_at).toLocaleDateString("en-US")}
+            </p>
+          )}
+          {deliveredAt && (
+            <p>
+              <span className="font-bold">Delivered on:</span>{" "}
+              {new Date(deliveredAt).toLocaleString("en-US", {
+                dateStyle: "long",
+                timeStyle: "short",
+              })}
             </p>
           )}
         </div>

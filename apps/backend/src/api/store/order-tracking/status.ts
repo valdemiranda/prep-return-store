@@ -16,17 +16,16 @@ const STATUS_BY_VALUE: Record<string, InternalOrderStatus> = {
   processing: "Processing",
   shipped: "Shipped",
   fulfilled: "Shipped",
-  intransit: "In transit",
-  in_transit: "In transit",
-  partially_delivered: "In transit",
+  intransit: "Shipped",
+  in_transit: "Shipped",
+  partially_delivered: "Shipped",
   delivered: "Delivered",
 };
 const STATUS_RANK: Record<InternalOrderStatus, number> = {
   Placed: 0,
   Processing: 1,
   Shipped: 2,
-  "In transit": 3,
-  Delivered: 4,
+  Delivered: 3,
 };
 
 function normalizeStatus(value: unknown): InternalOrderStatus | null {

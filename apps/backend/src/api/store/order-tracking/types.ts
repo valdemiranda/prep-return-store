@@ -2,7 +2,6 @@ export type InternalOrderStatus =
   | "Placed"
   | "Processing"
   | "Shipped"
-  | "In transit"
   | "Delivered";
 
 export type VeeqoTrackingEvent = {
@@ -27,6 +26,7 @@ export type PublicOrderTracking = {
   order_number: string;
   status: InternalOrderStatus;
   placed_at: string | null;
+  delivered_at: string | null;
   items: PublicTrackingItem[];
   recommended_category_ids: string[];
   shipment_id: string | null;

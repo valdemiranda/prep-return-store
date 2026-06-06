@@ -75,12 +75,12 @@ export default async function TrackOrderPage(props: TrackOrderProps) {
     )
   }
 
-  const hasRecommendations = region && recommendations.length > 0
+  const hasRecommendations = recommendations.length > 0
 
   return (
     <div className="content-container py-12 flex flex-col items-center min-h-[60vh] gap-8">
       <div className="w-full flex flex-col gap-8 max-w-5xl">
-        {hasRecommendations && (
+        {region && hasRecommendations && (
           <TrackingRecommendations products={recommendations} region={region} />
         )}
 

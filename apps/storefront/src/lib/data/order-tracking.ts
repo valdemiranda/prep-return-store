@@ -10,7 +10,6 @@ export type InternalOrderStatus =
   | "Placed"
   | "Processing"
   | "Shipped"
-  | "In transit"
   | "Delivered"
 
 export type OrderTrackingEvent = {
@@ -35,6 +34,7 @@ export type OrderTracking = {
   order_number: string
   status: InternalOrderStatus
   placed_at: string | null
+  delivered_at: string | null
   items: OrderTrackingItem[]
   recommended_category_ids: string[]
   shipment_id: string | null
