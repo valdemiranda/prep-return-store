@@ -1,12 +1,10 @@
 "use server"
 
-import { sdk } from "@lib/config"
-import { HttpTypes } from "@medusajs/types"
-
-import { listProducts } from "./products"
+import { listTrackingRecommendations as retrieveTrackingRecommendations } from "./tracking-recommendations"
 
 const MEDUSA_BACKEND_URL =
   process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
+const MEDUSA_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 
 export type InternalOrderStatus =
   | "Placed"
@@ -49,6 +47,9 @@ export async function retrieveOrderTracking(orderid: string, email: string) {
     `${MEDUSA_BACKEND_URL}/store/order-tracking?${params.toString()}`,
     {
       method: "GET",
+      headers: MEDUSA_PUBLISHABLE_KEY
+        ? { "x-publishable-api-key": MEDUSA_PUBLISHABLE_KEY }
+        : {},
       cache: "no-store",
     },
   )
@@ -65,48 +66,8 @@ export async function retrieveOrderTracking(orderid: string, email: string) {
   return data.order_tracking
 }
 
-export async function listTrackingRecommendations({
-  countryCode,
-  categoryIds,
-  excludeProductIds = [],
-}: {
-  countryCode: string
-  categoryIds?: string[]
-  excludeProductIds?: string[]
-}) {
-  const queryParams: HttpTypes.StoreProductListParams = {
-    limit: 8,
-    fields: "*variants.calculated_price,*variants.images,+metadata,+tags",
-  }
-
-  if (categoryIds?.length) {
-    queryParams.category_id = categoryIds
-  }
-
-  const {
-    response: { products },
-  } = await listProducts({ countryCode, queryParams }).catch(() => ({
-    response: { products: [] as HttpTypes.StoreProduct[], count: 0 },
-    nextPage: null,
-  }))
-
-  const filtered = products.filter(
-    (product) => !excludeProductIds.includes(product.id),
-  )
-
-  if (filtered.length || !categoryIds?.length) {
-    return filtered
-  }
-
-  const fallback = await listProducts({
-    countryCode,
-    queryParams: { ...queryParams, category_id: undefined },
-  }).catch(() => ({
-    response: { products: [] as HttpTypes.StoreProduct[], count: 0 },
-    nextPage: null,
-  }))
-
-  return fallback.response.products.filter(
-    (product) => !excludeProductIds.includes(product.id),
-  )
+export async function listTrackingRecommendations(
+  options: Parameters<typeof retrieveTrackingRecommendations>[0],
+) {
+  return retrieveTrackingRecommendations(options)
 }

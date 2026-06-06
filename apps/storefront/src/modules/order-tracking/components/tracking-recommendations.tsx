@@ -13,7 +13,7 @@ export default function TrackingRecommendations({
   }
 
   return (
-    <div className="w-full mt-12 border-t border-surface-container-highest pt-12">
+    <div className="w-full">
       <div className="flex justify-between mb-8 items-end border-b border-surface-container-highest pb-4">
         <h2 className="font-headline text-lg sm:text-xl font-extrabold text-on-surface uppercase tracking-tight">
           Recommended For You Today

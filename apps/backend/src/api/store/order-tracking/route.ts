@@ -23,9 +23,15 @@ const ORDER_FIELDS = [
   "items.id",
   "items.title",
   "items.quantity",
+  "items.fulfilled_quantity",
+  "items.shipped_quantity",
+  "items.detail.quantity",
+  "items.detail.fulfilled_quantity",
+  "items.detail.shipped_quantity",
   "items.product.id",
   "items.product.handle",
   "items.product.categories.id",
+  "fulfillments.*",
 ];
 
 function getOrderFilters(orderId: string) {
@@ -44,6 +50,18 @@ function getShipmentId(order: any) {
   return shipmentId ? String(shipmentId) : null;
 }
 
+function getNumber(...values: unknown[]) {
+  for (const value of values) {
+    const number = Number(value);
+
+    if (Number.isFinite(number)) {
+      return number;
+    }
+  }
+
+  return 0;
+}
+
 function getItems(order: any): PublicTrackingItem[] {
   return (order.items ?? []).map((item: any) => {
     const categories = item.product?.categories ?? [];
@@ -54,7 +72,7 @@ function getItems(order: any): PublicTrackingItem[] {
     return {
       id: item.id,
       title: item.title,
-      quantity: item.quantity,
+      quantity: getNumber(item.quantity, item.detail?.quantity),
       product_id: item.product?.id ?? null,
       product_handle: item.product?.handle ?? null,
       category_ids: categoryIds,

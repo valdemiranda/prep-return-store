@@ -75,34 +75,47 @@ export default async function TrackOrderPage(props: TrackOrderProps) {
     )
   }
 
+  const hasRecommendations = region && recommendations.length > 0
+
   return (
     <div className="content-container py-12 flex flex-col items-center min-h-[60vh] gap-8">
       <div className="w-full flex flex-col gap-8 max-w-5xl">
-        <div className="flex items-center justify-between border-b border-surface-container-highest pb-4">
-          <div>
-            <h1 className="font-headline text-2xl font-extrabold uppercase text-on-surface">
-              Track Order
-            </h1>
-            <p className="text-xs text-on-surface-variant mt-1">
-              Order number:{" "}
-              <span className="font-mono text-primary font-bold">
-                {tracking.order_number}
-              </span>
-            </p>
-          </div>
-          <LocalizedClientLink
-            href="/track-order"
-            className="text-xs font-bold text-secondary hover:text-primary transition-colors flex items-center gap-2 border border-outline-variant hover:bg-surface-container-low px-3 py-2 rounded-sm uppercase tracking-wide"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" /> Track Another
-          </LocalizedClientLink>
-        </div>
-
-        <StatusSteps status={tracking.status} />
-        <TrackingDetails tracking={tracking} />
-        {region && (
+        {hasRecommendations && (
           <TrackingRecommendations products={recommendations} region={region} />
         )}
+
+        <section
+          className={
+            hasRecommendations
+              ? "border-t border-surface-container-highest pt-8"
+              : undefined
+          }
+        >
+          <div className="flex items-center justify-between border-b border-surface-container-highest pb-4 mb-8">
+            <div>
+              <h1 className="font-headline text-2xl font-extrabold uppercase text-on-surface">
+                Track Order
+              </h1>
+              <p className="text-xs text-on-surface-variant mt-1">
+                Order number:{" "}
+                <span className="font-mono text-primary font-bold">
+                  {tracking.order_number}
+                </span>
+              </p>
+            </div>
+            <LocalizedClientLink
+              href="/track-order"
+              className="text-xs font-bold text-secondary hover:text-primary transition-colors flex items-center gap-2 border border-outline-variant hover:bg-surface-container-low px-3 py-2 rounded-sm uppercase tracking-wide"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" /> Track Another
+            </LocalizedClientLink>
+          </div>
+
+          <div className="flex flex-col gap-8">
+            <StatusSteps status={tracking.status} />
+            <TrackingDetails tracking={tracking} />
+          </div>
+        </section>
       </div>
     </div>
   )

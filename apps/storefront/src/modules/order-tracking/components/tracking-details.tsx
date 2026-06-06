@@ -2,12 +2,20 @@ import { OrderTracking } from "@lib/data/order-tracking"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { MapPin, Calendar, Clipboard, Package2 } from "lucide-react"
 
+function getQuantity(value: number) {
+  return Number.isFinite(value) ? value : 0
+}
+
 export default function TrackingDetails({
   tracking,
 }: {
   tracking: OrderTracking
 }) {
   const event = tracking.latest_tracking_event
+  const totalItems = tracking.items.reduce(
+    (acc, curr) => acc + getQuantity(curr.quantity),
+    0,
+  )
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
@@ -104,7 +112,7 @@ export default function TrackingDetails({
                   )}
                   <span className="text-[10px] text-on-surface-variant flex items-center gap-1">
                     <Package2 className="w-3 h-3 text-on-surface-variant/40" />
-                    Qty: {item.quantity}
+                    Qty: {getQuantity(item.quantity)}
                   </span>
                 </div>
               </div>
@@ -115,7 +123,7 @@ export default function TrackingDetails({
         <div className="border-t border-surface-container-highest mt-6 pt-4 text-[11px] text-on-surface-variant/70 flex items-center justify-between">
           <span>Total Items</span>
           <span className="font-bold text-on-surface text-xs">
-            {tracking.items.reduce((acc, curr) => acc + curr.quantity, 0)}
+            {totalItems}
           </span>
         </div>
       </div>

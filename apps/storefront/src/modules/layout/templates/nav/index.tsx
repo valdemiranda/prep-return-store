@@ -38,13 +38,16 @@ export default async function Nav() {
             {/* Mobile Actions */}
             <div className="flex md:hidden items-center gap-x-3 shrink-0">
               <LocalizedClientLink
-                className="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 hover:bg-surface-container-low rounded-full min-h-[40px] min-w-[40px]"
+                className="text-on-surface hover:text-primary transition-colors flex items-center justify-center gap-2 p-2 sm:px-3 hover:bg-surface-container-low rounded-full min-h-[40px] min-w-[40px]"
                 href="/track-order"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Track Order"
               >
                 <Truck className="w-5 h-5" />
+                <span className="hidden sm:inline text-[11px] font-bold uppercase whitespace-nowrap">
+                  Track Order
+                </span>
               </LocalizedClientLink>
               <LocalizedClientLink
                 className="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 hover:bg-surface-container-low rounded-full min-h-[40px] min-w-[40px]"
@@ -77,13 +80,16 @@ export default async function Nav() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-x-4 flex-1 justify-end shrink-0 order-2 md:order-3">
             <LocalizedClientLink
-              className="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 hover:bg-surface-container-low rounded-full"
+              className="text-on-surface hover:text-primary transition-colors flex items-center justify-center gap-2 px-3 py-2 hover:bg-surface-container-low rounded-full"
               href="/track-order"
               target="_blank"
               rel="noopener noreferrer"
               title="Track Order"
             >
               <Truck className="w-5 h-5" />
+              <span className="text-[11px] font-bold uppercase whitespace-nowrap">
+                Track Order
+              </span>
             </LocalizedClientLink>
             <LocalizedClientLink
               className="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-2 hover:bg-surface-container-low rounded-full"

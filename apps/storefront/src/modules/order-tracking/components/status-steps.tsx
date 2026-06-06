@@ -32,11 +32,11 @@ export default function StatusSteps({
       </h3>
 
       {/* Responsive timeline */}
-      <div className="relative flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-6 md:gap-2">
+      <div className="relative flex flex-col md:flex-row justify-between items-start md:items-start w-full gap-6 md:gap-2">
         {/* Connector Line (Desktop only) */}
-        <div className="absolute top-[18px] left-0 right-0 h-1 bg-surface-container hidden md:block z-0" />
+        <div className="absolute top-[16px] left-0 right-0 h-1 bg-surface-container hidden md:block z-0" />
         <div
-          className="absolute top-[18px] left-0 h-1 bg-primary hidden md:block z-0 transition-all duration-500"
+          className="absolute top-[16px] left-0 h-1 bg-primary hidden md:block z-0 transition-all duration-500"
           style={{
             width: `${(Math.max(0, activeIndex) / (STEPS.length - 1)) * 100}%`,
           }}

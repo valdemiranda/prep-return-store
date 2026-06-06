@@ -21,6 +21,13 @@ const STATUS_BY_VALUE: Record<string, InternalOrderStatus> = {
   partially_delivered: "In transit",
   delivered: "Delivered",
 };
+const STATUS_RANK: Record<InternalOrderStatus, number> = {
+  Placed: 0,
+  Processing: 1,
+  Shipped: 2,
+  "In transit": 3,
+  Delivered: 4,
+};
 
 function normalizeStatus(value: unknown): InternalOrderStatus | null {
   if (typeof value !== "string") {
@@ -49,15 +56,72 @@ function statusFromMetadata(metadata?: Record<string, unknown> | null) {
   return null;
 }
 
-export function resolveInternalStatus(order: any): InternalOrderStatus {
-  const metadataStatus = statusFromMetadata(order.metadata);
-  if (metadataStatus) {
-    return metadataStatus;
+function getNumber(value: unknown) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : 0;
+}
+
+function statusFromFulfillments(order: any): InternalOrderStatus | null {
+  const fulfillments = order.fulfillments ?? [];
+
+  if (fulfillments.some((fulfillment: any) => fulfillment.delivered_at)) {
+    return "Delivered";
   }
 
-  const fulfillmentStatus = normalizeStatus(order.fulfillment_status);
-  if (fulfillmentStatus) {
-    return fulfillmentStatus;
+  if (fulfillments.some((fulfillment: any) => fulfillment.shipped_at)) {
+    return "Shipped";
+  }
+
+  return null;
+}
+
+function statusFromItemQuantities(order: any): InternalOrderStatus | null {
+  const items = order.items ?? [];
+
+  if (!items.length) {
+    return null;
+  }
+
+  const totalQuantity = items.reduce(
+    (total: number, item: any) =>
+      total + getNumber(item.quantity ?? item.detail?.quantity),
+    0,
+  );
+  const shippedQuantity = items.reduce(
+    (total: number, item: any) =>
+      total + getNumber(item.shipped_quantity ?? item.detail?.shipped_quantity),
+    0,
+  );
+  const fulfilledQuantity = items.reduce(
+    (total: number, item: any) =>
+      total +
+      getNumber(item.fulfilled_quantity ?? item.detail?.fulfilled_quantity),
+    0,
+  );
+
+  if (totalQuantity > 0 && shippedQuantity >= totalQuantity) {
+    return "Shipped";
+  }
+
+  if (fulfilledQuantity > 0 || shippedQuantity > 0) {
+    return "Processing";
+  }
+
+  return null;
+}
+
+export function resolveInternalStatus(order: any): InternalOrderStatus {
+  const statuses = [
+    statusFromMetadata(order.metadata),
+    normalizeStatus(order.fulfillment_status),
+    statusFromFulfillments(order),
+    statusFromItemQuantities(order),
+  ].filter((status): status is InternalOrderStatus => !!status);
+
+  if (statuses.length) {
+    return statuses.reduce((latest, status) =>
+      STATUS_RANK[status] > STATUS_RANK[latest] ? status : latest,
+    );
   }
 
   if (
