@@ -2,6 +2,10 @@ services:
     postgres:
         image: postgres:16-alpine
         restart: unless-stopped
+        command:
+            - postgres
+            - -c
+            - hba_file=/etc/postgresql/pg_hba.conf
         ports:
             - "5432:5432"
         environment:
@@ -10,5 +14,6 @@ services:
             POSTGRES_PASSWORD: postgres
         volumes:
             - pgdata:/var/lib/postgresql/data
+            - ./docker/postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
 volumes:
     pgdata:
