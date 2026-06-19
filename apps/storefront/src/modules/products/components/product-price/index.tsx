@@ -1,6 +1,7 @@
 import { clx } from "@modules/common/components/ui"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
+import AmazonPrice from "@modules/products/components/amazon-price"
 
 export default function ProductPrice({
   product,
@@ -36,6 +37,11 @@ export default function ProductPrice({
         >
           {selectedPrice.calculated_price}
         </span>
+        <AmazonPrice
+          product={product}
+          selectedPriceNumber={selectedPrice.calculated_price_number}
+          currencyCode={selectedPrice.currency_code}
+        />
         {isSale && (
           <span className="bg-primary text-white text-[10px] font-black rounded-[2px] px-2 py-0.5 uppercase tracking-wider">
             -{selectedPrice.percentage_diff}% OFF

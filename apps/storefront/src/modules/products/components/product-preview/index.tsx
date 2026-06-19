@@ -73,7 +73,7 @@ export default function ProductPreview({
             <CompactCondition product={product} />
             {cheapestPrice && (
               <div className="flex justify-center h-6 items-center">
-                <PreviewPrice price={cheapestPrice} />
+                <PreviewPrice price={cheapestPrice} product={product} />
               </div>
             )}
           </div>

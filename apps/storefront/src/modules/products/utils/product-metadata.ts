@@ -13,6 +13,35 @@ const asString = (value: unknown): string | undefined => {
   return undefined
 }
 
+const asPriceNumber = (value: unknown): number | undefined => {
+  if (typeof value === "number") {
+    return Number.isFinite(value) && value >= 0 ? value : undefined
+  }
+
+  const str = asString(value)
+  if (!str) {
+    return undefined
+  }
+
+  const cleaned = str.replace(/[^\d.,-]/g, "")
+  const decimalIndex = Math.max(
+    cleaned.lastIndexOf("."),
+    cleaned.lastIndexOf(",")
+  )
+  const separator = cleaned[decimalIndex]
+  const decimalDigits =
+    separator && decimalIndex >= 0 ? cleaned.length - decimalIndex - 1 : 0
+  const decimalSeparator = decimalDigits > 0 && decimalDigits <= 2
+  const wholePart = cleaned.slice(0, decimalIndex).replace(/[.,]/g, "")
+  const centsPart = cleaned.slice(decimalIndex + 1)
+  const normalized = decimalSeparator
+    ? `${wholePart}.${centsPart}`
+    : cleaned.replace(/[.,]/g, "")
+  const parsed = Number.parseFloat(normalized)
+
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined
+}
+
 export const getProductBrand = (
   product: HttpTypes.StoreProduct
 ): string | undefined => asString(product.metadata?.brand)
@@ -83,3 +112,10 @@ export const getProductInventory = (
 
   return hasManaged ? total : null
 }
+
+/**
+ * Parses and returns the Amazon price from product metadata if it is valid.
+ */
+export const getProductAmazonPrice = (
+  product: HttpTypes.StoreProduct
+): number | undefined => asPriceNumber(product.metadata?.["amazon-price"])
