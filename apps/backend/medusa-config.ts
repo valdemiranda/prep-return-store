@@ -51,6 +51,27 @@ const r2FileModule =
         },
       ]
     : [];
+const sendgridNotificationModule =
+  process.env.SENDGRID_API_KEY && process.env.SENDGRID_FROM
+    ? [
+        {
+          resolve: "@medusajs/medusa/notification",
+          options: {
+            providers: [
+              {
+                resolve: "@medusajs/medusa/notification-sendgrid",
+                id: "sendgrid",
+                options: {
+                  channels: ["email"],
+                  api_key: process.env.SENDGRID_API_KEY,
+                  from: process.env.SENDGRID_FROM,
+                },
+              },
+            ],
+          },
+        },
+      ]
+    : [];
 
 module.exports = defineConfig({
   admin: {
@@ -112,5 +133,6 @@ module.exports = defineConfig({
       },
     },
     ...r2FileModule,
+    ...sendgridNotificationModule,
   ],
 });
