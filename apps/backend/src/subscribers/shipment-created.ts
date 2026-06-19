@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework";
 import { ShipmentCreatedEmail } from "../email-templates/shipment-created";
 import {
@@ -35,15 +36,13 @@ export default async function shipmentCreatedHandler({
     container,
     to: getCustomerEmail(order),
     subject: `Order #OSL-${getOrderNumber(order)} has shipped`,
-    template: (
-      <ShipmentCreatedEmail
-        orderId={getOrderNumber(order)}
-        items={toEmailItems(order)}
-        carrier={tracking.carrier}
-        trackingNumber={tracking.trackingNumber}
-        trackingUrl={tracking.trackingUrl}
-      />
-    ),
+    template: createElement(ShipmentCreatedEmail, {
+      orderId: getOrderNumber(order),
+      items: toEmailItems(order),
+      carrier: tracking.carrier,
+      trackingNumber: tracking.trackingNumber,
+      trackingUrl: tracking.trackingUrl,
+    }),
   });
 }
 

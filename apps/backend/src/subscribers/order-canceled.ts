@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework";
 import { OrderCanceledEmail } from "../email-templates/order-canceled";
 import {
@@ -20,15 +21,15 @@ export default async function orderCanceledHandler({
     container,
     to: getCustomerEmail(order),
     subject: `Order canceled #OSL-${getOrderNumber(order)}`,
-    template: (
-      <OrderCanceledEmail
-        orderId={getOrderNumber(order)}
-        cancellationReason="Your order was canceled. If payment was captured, the refund will be processed to the original payment method."
-        refundStatus="Refund timing depends on the original payment method and your bank."
-        items={toEmailItems(order)}
-        storeUrl={getStoreUrl()}
-      />
-    ),
+    template: createElement(OrderCanceledEmail, {
+      orderId: getOrderNumber(order),
+      cancellationReason:
+        "Your order was canceled. If payment was captured, the refund will be processed to the original payment method.",
+      refundStatus:
+        "Refund timing depends on the original payment method and your bank.",
+      items: toEmailItems(order),
+      storeUrl: getStoreUrl(),
+    }),
   });
 }
 

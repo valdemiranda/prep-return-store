@@ -1,11 +1,11 @@
-import * as React from "react";
+import type { ReactElement } from "react";
 import { renderEmail } from "../email-templates/render-email";
 
 type SendEmailInput = {
   container: any;
   to: string;
   subject: string;
-  template: React.ReactElement;
+  template: ReactElement;
 };
 
 export async function sendEmail({
