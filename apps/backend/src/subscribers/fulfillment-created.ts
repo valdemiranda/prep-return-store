@@ -37,7 +37,7 @@ export default async function fulfillmentCreatedHandler({
   await sendEmail({
     container,
     to: getCustomerEmail(order),
-    subject: `Order #OSL-${getOrderNumber(order)} is being prepared`,
+    subject: `Order #${getOrderNumber(order)} is being prepared`,
     template: createElement(FulfillmentCreatedEmail, {
       orderId: getOrderNumber(order),
       fulfillmentId: data.fulfillment_id,

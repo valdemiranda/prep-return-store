@@ -20,7 +20,7 @@ export default async function orderCanceledHandler({
   await sendEmail({
     container,
     to: getCustomerEmail(order),
-    subject: `Order canceled #OSL-${getOrderNumber(order)}`,
+    subject: `Order canceled #${getOrderNumber(order)}`,
     template: createElement(OrderCanceledEmail, {
       orderId: getOrderNumber(order),
       cancellationReason:

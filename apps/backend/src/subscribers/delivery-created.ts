@@ -37,7 +37,7 @@ export default async function deliveryCreatedHandler({
   await sendEmail({
     container,
     to: getCustomerEmail(order),
-    subject: `Order #OSL-${getOrderNumber(order)} was delivered`,
+    subject: `Order #${getOrderNumber(order)} was delivered`,
     template: createElement(DeliveryCreatedEmail, {
       orderId: getOrderNumber(order),
       deliveryDate: formatDate(fulfillment?.delivered_at || new Date()),

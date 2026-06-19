@@ -1,6 +1,14 @@
 import * as React from "react";
 import { colors, OrderItem } from "./theme";
-import { EmailLayout, EmailHeader, EmailFooter, EmailButton, Card, ItemRow, Text } from "./components";
+import {
+  EmailLayout,
+  EmailHeader,
+  EmailFooter,
+  EmailButton,
+  Card,
+  ItemRow,
+  Text,
+} from "./components";
 
 export interface FulfillmentCreatedEmailProps {
   orderId: string;
@@ -22,21 +30,31 @@ export const FulfillmentCreatedEmail = ({
   storeUrl,
 }: FulfillmentCreatedEmailProps) => {
   return (
-    <EmailLayout previewText={`Items from Order #OSL-${orderId} are prepared and packed.`}>
+    <EmailLayout
+      previewText={`Items from Order #${orderId} are prepared and packed.`}
+    >
       <EmailHeader
         title="Items Prepared for Shipping"
-        subtitle={`Order #OSL-${orderId} • Fulfillment #${fulfillmentId}`}
+        subtitle={`Order #${orderId} • Fulfillment #${fulfillmentId}`}
       />
-      <Text style={{ fontSize: "14px", color: colors.onSurface, margin: "0 0 20px 0", lineHeight: "1.5" }}>
-        Your items have been picked and packed at our central warehouse facility. They are now secured and waiting for carrier collection.
+      <Text
+        style={{
+          fontSize: "14px",
+          color: colors.onSurface,
+          margin: "0 0 20px 0",
+          lineHeight: "1.5",
+        }}
+      >
+        Your items have been picked and packed at our central warehouse
+        facility. They are now secured and waiting for carrier collection.
       </Text>
-      
+
       <Card title="Items Prepared">
         {items.map((item) => (
           <ItemRow key={item.id} item={item} />
         ))}
       </Card>
-      
+
       {(carrier || trackingNumber) && (
         <Card title="Carrier & Tracking Details">
           {carrier && (
@@ -51,11 +69,14 @@ export const FulfillmentCreatedEmail = ({
           )}
         </Card>
       )}
-      
+
       {trackingUrl ? (
         <EmailButton href={trackingUrl} text="Track Package Status" />
       ) : (
-        <EmailButton href={`${storeUrl}/account/orders/${orderId}`} text="View Order Details" />
+        <EmailButton
+          href={`${storeUrl}/account/orders/${orderId}`}
+          text="View Order Details"
+        />
       )}
       <EmailFooter />
     </EmailLayout>
@@ -72,7 +93,14 @@ FulfillmentCreatedEmail.PreviewProps = {
   orderId: "9821-44",
   fulfillmentId: "ful_01H238FGA",
   items: [
-    { id: "1", title: "Industrial Heavy Duty Pallet Jack 5500 lbs", quantity: 1, price: "$299.99", thumbnail: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=100&auto=format&fit=crop&q=60" }
+    {
+      id: "1",
+      title: "Industrial Heavy Duty Pallet Jack 5500 lbs",
+      quantity: 1,
+      price: "$299.99",
+      thumbnail:
+        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=100&auto=format&fit=crop&q=60",
+    },
   ],
   carrier: "FedEx Freight",
   trackingNumber: "771234567890",

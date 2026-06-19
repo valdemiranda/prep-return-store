@@ -29,13 +29,14 @@ export default async function shipmentCreatedHandler({
 
   const query = container.resolve("query");
   const order = await fetchOrderByShipment(query, data.id);
-  const fulfillment = findFulfillment(order, data.id) || order?.fulfillments?.[0];
+  const fulfillment =
+    findFulfillment(order, data.id) || order?.fulfillments?.[0];
   const tracking = getTracking(fulfillment);
 
   await sendEmail({
     container,
     to: getCustomerEmail(order),
-    subject: `Order #OSL-${getOrderNumber(order)} has shipped`,
+    subject: `Order #${getOrderNumber(order)} has shipped`,
     template: createElement(ShipmentCreatedEmail, {
       orderId: getOrderNumber(order),
       items: toEmailItems(order),

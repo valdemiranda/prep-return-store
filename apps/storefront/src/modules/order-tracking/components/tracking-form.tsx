@@ -24,7 +24,7 @@ export default function TrackingForm({
         label="Order Number"
         name="orderid"
         defaultValue={defaultOrderId}
-        placeholder="order_..."
+        placeholder="123456"
         required
       />
       <Input
