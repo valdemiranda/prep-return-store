@@ -117,6 +117,14 @@ module.exports = defineConfig({
       },
     },
     {
+      // Redis-backed event bus — the local (in-memory) default is not
+      // recommended for production (events are lost on restart).
+      resolve: "@medusajs/medusa/event-bus-redis",
+      options: {
+        redisUrl,
+      },
+    },
+    {
       resolve: "@medusajs/medusa/payment",
       options: {
         providers: [

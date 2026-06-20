@@ -9,7 +9,7 @@ import {
 import SendgridMarketingModuleService from "../../../modules/sendgrid-marketing/service"
 import { NewsletterWelcomeEmail } from "../../../email-templates/newsletter-welcome"
 import { getStoreUrl } from "../../../email-templates/formatters"
-import { sendEmail } from "../../../subscribers/send-email"
+import { sendEmail } from "../../../utils/send-email"
 
 const newsletterSignupSchema = z.object({
   email: z.string().trim().email(),

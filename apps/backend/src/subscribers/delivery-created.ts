@@ -13,8 +13,8 @@ import {
   fetchOrderByFulfillment,
   findFulfillment,
   hasNotificationsDisabled,
-} from "./email-data";
-import { sendEmail } from "./send-email";
+} from "../utils/email-data";
+import { sendEmail } from "../utils/send-email";
 
 type DeliveryEvent = {
   id: string;

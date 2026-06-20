@@ -10,8 +10,8 @@ import {
   toEmailAddress,
   toEmailItems,
 } from "../email-templates/formatters";
-import { fetchOrder } from "./email-data";
-import { sendEmail } from "./send-email";
+import { fetchOrder } from "../utils/email-data";
+import { sendEmail } from "../utils/send-email";
 
 export default async function orderPlacedHandler({
   event: { data },

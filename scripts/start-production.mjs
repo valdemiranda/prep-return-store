@@ -44,22 +44,22 @@ function shutdown(code = 0) {
 }
 
 if (!existsSync(resolve(backendDir, "package.json"))) {
-  console.error("Backend production build not found. Run `npm run build` first.");
+  console.error("Backend production build not found. Run `yarn build` first.");
   process.exit(1);
 }
 
 if (!existsSync(resolve(backendDir, "node_modules"))) {
-  console.error("Backend production dependencies not found. Run `npm run build` first.");
+  console.error("Backend production dependencies not found. Run `yarn build` first.");
   process.exit(1);
 }
 
 let shuttingDown = false;
 const children = [
-  startProcess("backend", "npm", ["run", "start"], {
+  startProcess("backend", "yarn", ["run", "start"], {
     cwd: backendDir,
     env: process.env,
   }),
-  startProcess("storefront", "npm", ["run", "start", "--workspace=@dtc/storefront"], {
+  startProcess("storefront", "yarn", ["workspace", "@dtc/storefront", "run", "start"], {
     cwd: storefrontDir,
     env: process.env,
   }),

@@ -1,0 +1,11 @@
+# Nixpacks build plan for the @dtc/storefront (Next.js) service.
+# Used when NIXPACKS_CONFIG_FILE=nixpacks.storefront.toml is set on the service.
+# The install phase is intentionally left to the provider so Corepack
+# (corepack@0.24.1 && corepack enable) + `yarn install --check-cache` (Yarn
+# Berry, detected via .yarnrc.yml at the repo root) run unchanged.
+
+[phases.build]
+cmds = ['npx turbo run build --filter=@dtc/storefront']
+
+[start]
+cmd = 'yarn workspace @dtc/storefront run start'

@@ -36,6 +36,7 @@
     "@paypal/paypal-server-sdk": "^2.3.0",
     "@tanstack/react-query": "5.64.2",
     "lucide-react": "^1.17.0",
+    "posthog-node": "^5.11.0",
     "react-i18next": "13.5.0",
     "react-router-dom": "6.30.3",
     "zod": "4.2.0"
@@ -60,5 +61,5 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "npm@11.12.1"
+  "packageManager": "yarn@4.17.0+sha512.c2957de2f9025ab14d63b24d0d8be1f1655810e22c341042c27f7ecd017b180ec12db73d69ac366d71b304ef9f069349ce462de96f04f8f1da317f4f762c95ae"
 }

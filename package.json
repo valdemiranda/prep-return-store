@@ -1,9 +1,8 @@
 {
   "name": "backend",
-  "private": false,
-  "packageManager": "npm@11.12.1",
+  "packageManager": "yarn@4.17.0+sha512.c2957de2f9025ab14d63b24d0d8be1f1655810e22c341042c27f7ecd017b180ec12db73d69ac366d71b304ef9f069349ce462de96f04f8f1da317f4f762c95ae",
   "engines": {
-    "node": ">=20"
+    "node": "22"
   },
   "scripts": {
     "dev": "turbo dev",
@@ -13,24 +12,18 @@
     "test": "turbo test",
     "backend:seed": "turbo seed --filter=@dtc/backend",
     "backend:dev": "turbo dev --filter=@dtc/backend",
-    "backend:email": "npm run email:dev --workspace=@dtc/backend",
+    "backend:email": "yarn workspace @dtc/backend run email:dev",
     "storefront:dev": "turbo dev --filter=@dtc/storefront"
   },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.0.5",
-      "@types/react-dom": "19.0.5"
-    }
-  },
   "devDependencies": {
-    "turbo": "^2.0.14",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.14"
   },
   "workspaces": [
     "apps/**",
     "!apps/backend/.medusa/**"
   ],
-  "overrides": {
+  "resolutions": {
     "ajv": "^8.0.0"
   }
 }

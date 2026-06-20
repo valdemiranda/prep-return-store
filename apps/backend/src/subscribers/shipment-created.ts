@@ -11,8 +11,8 @@ import {
   fetchOrderByShipment,
   findFulfillment,
   hasNotificationsDisabled,
-} from "./email-data";
-import { sendEmail } from "./send-email";
+} from "../utils/email-data";
+import { sendEmail } from "../utils/send-email";
 
 type ShipmentEvent = {
   id: string;
