@@ -99,6 +99,9 @@ module.exports = defineConfig({
       resolve: "./src/modules/store-content",
     },
     {
+      resolve: "./src/modules/sendgrid-marketing",
+    },
+    {
       resolve: "@medusajs/medusa/caching",
       options: {
         providers: [

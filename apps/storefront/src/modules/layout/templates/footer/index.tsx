@@ -3,12 +3,13 @@ import {
   listCategoriesWithAvailableProducts,
 } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
-import { Send, Globe, Mail, MessageSquare } from "lucide-react"
+import { Globe, Mail, MessageSquare } from "lucide-react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import BrandLogo from "@modules/layout/components/brand-logo"
 import InstitutionalLinks from "./institutional-links"
 import PaymentMethods from "@modules/common/components/payment-methods"
+import NewsletterForm from "./newsletter-form"
 
 export default async function Footer({
   countryCode,
@@ -97,16 +98,7 @@ export default async function Footer({
           <p className="text-xs text-on-surface-variant mb-4">
             Get first access to new shipment alerts.
           </p>
-          <div className="flex">
-            <input
-              className="bg-surface-container border border-r-0 border-outline-variant rounded-l-base w-full px-4 py-2 text-xs focus:ring-1 focus:ring-primary text-on-surface"
-              placeholder="Your email"
-              type="email"
-            />
-            <button className="bg-primary hover:bg-primary-container text-white px-4 rounded-r-base transition-colors flex items-center justify-center">
-              <Send className="w-4 h-4" />
-            </button>
-          </div>
+          <NewsletterForm />
         </div>
       </div>
 
