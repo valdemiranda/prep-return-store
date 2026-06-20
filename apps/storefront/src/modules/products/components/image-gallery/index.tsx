@@ -5,6 +5,12 @@ import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
 import { ChevronUp, ChevronDown } from "lucide-react"
 
+// The thumbnail rail combines scroll-snap with vertical padding, so the rest
+// position can land a few pixels off the true top/bottom. This threshold
+// absorbs that offset (plus sub-pixel rounding) so the arrows don't linger at
+// the scroll limits.
+const SCROLL_EDGE_THRESHOLD = 6
+
 type ImageGalleryProps = {
   images: HttpTypes.StoreProductImage[]
 }
@@ -17,10 +23,10 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
 
   const checkScroll = () => {
     const r = railRef.current
-    if (r) {
-      setCanScrollUp(r.scrollTop > 1.5)
-      setCanScrollDown(r.scrollTop + r.clientHeight < r.scrollHeight - 1.5)
-    }
+    if (!r) return
+    const maxScroll = r.scrollHeight - r.clientHeight
+    setCanScrollUp(r.scrollTop > SCROLL_EDGE_THRESHOLD)
+    setCanScrollDown(maxScroll - r.scrollTop > SCROLL_EDGE_THRESHOLD)
   }
 
   useEffect(() => {
@@ -81,7 +87,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
         <div
           ref={railRef}
           onScroll={checkScroll}
-          className="flex small:flex-col gap-2 overflow-x-auto small:overflow-y-auto no-scrollbar py-1 small:absolute small:inset-0 scroll-smooth snap-x small:snap-y snap-mandatory"
+          className="flex small:flex-col gap-2 overflow-x-auto small:overflow-y-auto no-scrollbar py-1 small:absolute small:inset-0 scroll-smooth snap-x small:snap-y snap-mandatory scroll-pt-1 scroll-pb-1"
         >
           {images.map((image, index) => (
             <button
