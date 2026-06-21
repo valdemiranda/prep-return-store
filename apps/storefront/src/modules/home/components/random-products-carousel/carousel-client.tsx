@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, useCallback } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
 import ProductPreview from "@modules/products/components/product-preview"
+import SectionHeader from "../section-header"
 
 type CarouselClientProps = {
   products: HttpTypes.StoreProduct[]
@@ -83,30 +84,28 @@ export default function RandomProductsCarouselClient({
       className="py-12 border-t border-surface-container-highest bg-surface-container-low/30 font-sans"
     >
       <div className="content-container max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
-          <div>
-            <h2 className="font-headline text-2xl sm:text-headline-lg uppercase text-on-surface leading-tight">Recommended for You</h2>
-            <p className="text-on-surface-variant font-body-md text-sm sm:text-body-md mt-1">
-              Handpicked liquidated stock selected at random
-            </p>
-          </div>
-          <div className="flex gap-2 shrink-0 self-end sm:self-auto">
-            <button
-              onClick={() => scrollRows("left")}
-              className="p-2 border border-outline rounded-full hover:bg-surface-container transition-colors text-on-surface active:scale-95 min-h-[40px] min-w-[40px] flex items-center justify-center"
-              aria-label="Previous products"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scrollRows("right")}
-              className="p-2 border border-outline rounded-full hover:bg-surface-container transition-colors text-on-surface active:scale-95 min-h-[40px] min-w-[40px] flex items-center justify-center"
-              aria-label="Next products"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
+        <SectionHeader
+          title="Recommended for You"
+          subtitle="Handpicked selected stock"
+          action={
+            <div className="flex gap-2 shrink-0">
+              <button
+                onClick={() => scrollRows("left")}
+                className="p-2 border border-outline rounded-full hover:bg-surface-container transition-colors text-on-surface active:scale-95 min-h-[40px] min-w-[40px] flex items-center justify-center"
+                aria-label="Previous products"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => scrollRows("right")}
+                className="p-2 border border-outline rounded-full hover:bg-surface-container transition-colors text-on-surface active:scale-95 min-h-[40px] min-w-[40px] flex items-center justify-center"
+                aria-label="Next products"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          }
+        />
 
         <div className="flex flex-col gap-6">
           <div
