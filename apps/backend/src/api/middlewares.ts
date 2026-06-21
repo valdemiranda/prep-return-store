@@ -4,6 +4,8 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { getClientIp } from "../utils/client-ip"
+import { rateLimit } from "../utils/rate-limit"
 import { verifyTurnstile } from "../utils/verify-turnstile"
 
 /**
@@ -33,16 +35,45 @@ async function verifyCaptcha(
   next: MedusaNextFunction
 ) {
   const token = getTurnstileToken(req)
-  const forwardedFor = req.headers["x-forwarded-for"]
-  const remoteip =
-    typeof forwardedFor === "string"
-      ? forwardedFor.split(",")[0]?.trim()
-      : undefined
+  const remoteip = getClientIp(req)
 
   const result = await verifyTurnstile(token, remoteip)
 
   if (!result.success) {
     res.status(403).json({ message: "Captcha verification failed." })
+    return
+  }
+
+  next()
+}
+
+/** Limite de tentativas de login do admin por IP, por janela. */
+const ADMIN_LOGIN_LIMIT = 10
+const ADMIN_LOGIN_WINDOW_MS = 60_000 // 1 minuto
+
+/**
+ * Rate-limit no login do admin (POST /auth/user/emailpass) por IP. Barrando o
+ * volume de tentativas, mitiga brute-force/credential stuffing — mesmo
+ * objetivo de um captcha, sem depender do frontend do core do admin. Retorna
+ * 429 com `Retry-After` quando excedido.
+ */
+async function adminLoginRateLimit(
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  const ip = getClientIp(req) ?? "unknown"
+  const { allowed, retryAfter } = rateLimit(
+    `login:admin:${ip}`,
+    ADMIN_LOGIN_LIMIT,
+    ADMIN_LOGIN_WINDOW_MS
+  )
+
+  if (!allowed) {
+    res.setHeader("Retry-After", String(retryAfter))
+    res
+      .status(429)
+      .json({ message: "Too many login attempts. Try again later." })
     return
   }
 
@@ -60,6 +91,11 @@ export default defineMiddlewares({
       matcher: "/store/order-tracking",
       methods: ["GET"],
       middlewares: [verifyCaptcha],
+    },
+    {
+      matcher: "/auth/user/emailpass",
+      methods: ["POST"],
+      middlewares: [adminLoginRateLimit],
     },
   ],
 })

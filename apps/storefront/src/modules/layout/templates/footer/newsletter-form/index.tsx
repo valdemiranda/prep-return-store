@@ -10,6 +10,10 @@ import Turnstile, {
 export default function NewsletterForm() {
   const [email, setEmail] = useState("")
   const [captchaToken, setCaptchaToken] = useState("")
+  // O widget do Turnstile só é montado quando o visitante interage com o
+  // campo de email. Assim evitamos disparar um desafio (e o re-challenge a
+  // cada ~5 min enquanto a aba fica aberta) em todo pageview do rodapé.
+  const [captchaMounted, setCaptchaMounted] = useState(false)
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [message, setMessage] = useState("")
 
@@ -53,6 +57,7 @@ export default function NewsletterForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          onFocus={() => setCaptchaMounted(true)}
           disabled={status === "loading"}
         />
         <button
@@ -68,8 +73,8 @@ export default function NewsletterForm() {
           )}
         </button>
       </form>
-      {isTurnstileConfigured && (
-        <Turnstile onVerify={setCaptchaToken} />
+      {isTurnstileConfigured && captchaMounted && (
+        <Turnstile onVerify={setCaptchaToken} appearance="interaction-only" />
       )}
       {status === "success" && (
         <p className="text-xs text-green-600 font-medium leading-none" role="status">
