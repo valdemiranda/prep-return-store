@@ -3,22 +3,21 @@ import SkeletonProductPreview from "@modules/skeletons/components/skeleton-produ
 
 const SkeletonRelatedProducts = () => {
   return (
-    <div className="product-page-constraint">
-      <div className="flex flex-col gap-8 items-center text-center mb-8">
-        <div className="w-20 h-6 animate-pulse bg-gray-100"></div>
-        <div className="flex flex-col gap-4 items-center text-center mb-16">
-          <div className="w-96 h-10 animate-pulse bg-gray-100"></div>
-          <div className="w-48 h-10 animate-pulse bg-gray-100"></div>
+    <section className="bg-surface-container-low">
+      <div className="max-w-[1280px] w-full mx-auto px-margin-mobile md:px-gutter py-12 small:py-16">
+        <div className="mb-8 small:mb-10">
+          <div className="h-7 w-48 animate-pulse bg-surface-container-high rounded-sm"></div>
+          <div className="mt-2 pl-4 h-4 w-72 animate-pulse bg-surface-container-high rounded-sm"></div>
         </div>
+        <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 xlarge:grid-cols-5 2xlarge:grid-cols-6 gap-x-6 gap-y-10 small:gap-y-12">
+          {repeat(6).map((index) => (
+            <li key={index}>
+              <SkeletonProductPreview />
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 xlarge:grid-cols-5 2xlarge:grid-cols-6 gap-x-6 gap-y-8 flex-1">
-        {repeat(3).map((index) => (
-          <li key={index}>
-            <SkeletonProductPreview />
-          </li>
-        ))}
-      </ul>
-    </div>
+    </section>
   )
 }
 

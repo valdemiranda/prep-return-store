@@ -39,8 +39,10 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         <ProductBreadcrumbs product={product} />
 
         <div className="grid grid-cols-1 small:grid-cols-12 gap-gutter items-start">
-          <div className="w-full small:col-span-7">
+          <div className="w-full small:col-span-7 flex flex-col gap-6">
             <ImageGallery images={images} />
+            {/* Desktop: badges fill the empty space below the image */}
+            <ProductTrustBadges className="hidden small:block" />
           </div>
 
           <div className="w-full small:col-span-5 space-y-6">
@@ -68,7 +70,8 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
             >
               <ProductActionsWrapper id={product.id} region={region} />
             </Suspense>
-            <ProductTrustBadges />
+            {/* Mobile: badges appear after the add-to-cart, before the description */}
+            <ProductTrustBadges className="block small:hidden" />
           </div>
         </div>
 
@@ -94,7 +97,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
       </div>
 
       <div
-        className="content-container my-16 small:my-32"
+        className="mt-8 small:mt-12"
         data-testid="related-products-container"
       >
         <Suspense fallback={<SkeletonRelatedProducts />}>
