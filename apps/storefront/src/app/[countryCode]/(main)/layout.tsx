@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 
 import { listCartOptions, retrieveCart } from "@lib/data/cart"
+import { getFreeShippingDismissal } from "@lib/data/cookies"
 import { retrieveCustomer } from "@lib/data/customer"
 import { getBaseURL } from "@lib/util/env"
 import { StoreCartShippingOption } from "@medusajs/types"
@@ -22,11 +23,17 @@ export default async function PageLayout(props: {
   const customer = await retrieveCustomer()
   const cart = await retrieveCart()
   let shippingOptions: StoreCartShippingOption[] = []
+  let isFreeShippingDismissed = false
 
   if (cart) {
     const { shipping_options } = await listCartOptions()
 
     shippingOptions = shipping_options
+
+    // The free-shipping popup is dismissed per-cart (session cookie set when the
+    // user closes it). Skip rendering while the dismissal matches this cart.
+    const dismissedCartId = await getFreeShippingDismissal()
+    isFreeShippingDismissed = dismissedCartId === cart.id
   }
 
   return (
@@ -36,7 +43,7 @@ export default async function PageLayout(props: {
         <CartMismatchBanner customer={customer} cart={cart} />
       )}
 
-      {cart && (
+      {cart && !isFreeShippingDismissed && (
         <FreeShippingPriceNudge
           variant="popup"
           cart={cart}

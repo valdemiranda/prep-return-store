@@ -87,3 +87,21 @@ export const removeCartId = async () => {
     maxAge: -1,
   })
 }
+
+// Session cookie (no maxAge) storing the id of the cart whose "Unlock Free
+// Shipping" popup the user dismissed. Set client-side by the popup's close
+// button; read server-side by the (main) layout to avoid re-rendering it.
+export const getFreeShippingDismissal = async (): Promise<string | null> => {
+  try {
+    const cookies = await nextCookies()
+    const value = cookies.get("_medusa_freeship_nudge")?.value
+
+    if (!value) {
+      return null
+    }
+
+    return decodeURIComponent(value)
+  } catch {
+    return null
+  }
+}
