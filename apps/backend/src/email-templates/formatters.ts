@@ -8,6 +8,12 @@ export function getStoreUrl() {
   return process.env.STORE_URL || corsUrl || "http://localhost:8000";
 }
 
+export function getAdminUrl() {
+  const corsUrl = process.env.ADMIN_CORS?.split(",")[0];
+
+  return process.env.ADMIN_URL || corsUrl || "http://localhost:9000";
+}
+
 export function getOrderNumber(order: MaybeRecord) {
   return String(order?.display_id || order?.id || "").replace(/^order_/, "");
 }
