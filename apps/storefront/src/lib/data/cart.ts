@@ -13,6 +13,7 @@ import {
   removeCartId,
   setCartId,
 } from "./cookies"
+import { verifyCaptcha } from "./captcha"
 import { getRegion } from "./regions"
 import { getLocale } from "./locale-actions"
 
@@ -455,7 +456,11 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
  * @param cartId - optional - The ID of the cart to place an order for.
  * @returns The cart object if the order was successful, or null if not.
  */
-export async function placeOrder(cartId?: string) {
+export async function placeOrder(cartId?: string, captchaToken?: string) {
+  if (!(await verifyCaptcha(captchaToken))) {
+    throw new Error("Captcha verification failed. Please try again.")
+  }
+
   const id = cartId || (await getCartId())
 
   if (!id) {

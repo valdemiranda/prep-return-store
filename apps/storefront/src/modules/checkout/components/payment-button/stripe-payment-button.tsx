@@ -3,6 +3,9 @@
 import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@modules/common/components/ui"
+import Turnstile, {
+  isTurnstileConfigured,
+} from "@modules/common/components/turnstile"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import { useState } from "react"
 import ErrorMessage from "../error-message"
@@ -23,12 +26,15 @@ const StripePaymentButton = ({
 }: StripePaymentButtonProps) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [captchaToken, setCaptchaToken] = useState("")
   const stripe = useStripe()
   const elements = useElements()
   const card = elements?.getElement("card")
+  // Quando o captcha está habilitado, exige o token antes de habilitar o envio.
+  const captchaReady = !isTurnstileConfigured || Boolean(captchaToken)
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
+    await placeOrder(undefined, captchaToken)
       .catch((err) => {
         setErrorMessage(err.message)
       })
@@ -40,7 +46,7 @@ const StripePaymentButton = ({
   const handlePayment = async () => {
     setSubmitting(true)
 
-    if (!stripe || !elements || !card || !cart) {
+    if (!stripe || !elements || !card || !cart || !captchaReady) {
       setSubmitting(false)
       return
     }
@@ -93,8 +99,9 @@ const StripePaymentButton = ({
 
   return (
     <>
+      {isTurnstileConfigured && <Turnstile onVerify={setCaptchaToken} />}
       <Button
-        disabled={!stripe || !elements || notReady}
+        disabled={!stripe || !elements || notReady || !captchaReady}
         onClick={handlePayment}
         size="large"
         isLoading={submitting}

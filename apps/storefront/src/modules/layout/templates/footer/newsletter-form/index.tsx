@@ -3,21 +3,28 @@
 import React, { useState } from "react"
 import { Send, Loader2 } from "lucide-react"
 import { subscribeToNewsletter } from "@lib/data/newsletter"
+import Turnstile, {
+  isTurnstileConfigured,
+} from "@modules/common/components/turnstile"
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("")
+  const [captchaToken, setCaptchaToken] = useState("")
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [message, setMessage] = useState("")
 
+  // Quando o captcha está habilitado, exige o token antes de habilitar o envio.
+  const captchaReady = !isTurnstileConfigured || Boolean(captchaToken)
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!email) return
+    if (!email || !captchaReady) return
 
     setStatus("loading")
     setMessage("")
 
     try {
-      const res = await subscribeToNewsletter(email)
+      const res = await subscribeToNewsletter(email, captchaToken)
       if (res.success) {
         setStatus("success")
         setMessage("Thank you for subscribing to our newsletter!")
@@ -50,7 +57,7 @@ export default function NewsletterForm() {
         />
         <button
           type="submit"
-          disabled={status === "loading"}
+          disabled={status === "loading" || !captchaReady}
           className="bg-primary hover:bg-primary-container text-white px-4 rounded-r-base transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Subscribe"
         >
@@ -61,6 +68,9 @@ export default function NewsletterForm() {
           )}
         </button>
       </form>
+      {isTurnstileConfigured && (
+        <Turnstile onVerify={setCaptchaToken} />
+      )}
       {status === "success" && (
         <p className="text-xs text-green-600 font-medium leading-none" role="status">
           {message}

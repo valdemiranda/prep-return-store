@@ -6,6 +6,7 @@ import { LOGIN_VIEW } from "@modules/account/templates/login-template"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Turnstile from "@modules/common/components/turnstile"
 import { signup } from "@lib/data/customer"
 
 type Props = {
@@ -67,6 +68,7 @@ const Register = ({ setCurrentView }: Props) => {
             data-testid="password-input"
           />
         </div>
+        <Turnstile className="mt-4" />
         <ErrorMessage error={message} data-testid="register-error" />
         <span className="text-center text-ui-fg-base text-small-regular mt-6">
           By creating an account, you agree to One Stop Liquidation&apos;s{" "}

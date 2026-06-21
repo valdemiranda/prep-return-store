@@ -3,6 +3,7 @@
 import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
+import { verifyCaptcha } from "./captcha"
 import { HttpTypes } from "@medusajs/types"
 
 export const retrieveOrder = async (id: string) => {
@@ -76,6 +77,14 @@ export const createTransferRequest = async (
 
   if (!id) {
     return { success: false, error: "Order ID is required", order: null }
+  }
+
+  if (!(await verifyCaptcha(formData.get("cf-turnstile-response") as string))) {
+    return {
+      success: false,
+      error: "Captcha verification failed. Please try again.",
+      order: null,
+    }
   }
 
   const headers = await getAuthHeaders()

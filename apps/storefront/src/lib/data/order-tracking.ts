@@ -41,8 +41,15 @@ export type OrderTracking = {
   latest_tracking_event: OrderTrackingEvent | null
 }
 
-export async function retrieveOrderTracking(orderid: string, email: string) {
+export async function retrieveOrderTracking(
+  orderid: string,
+  email: string,
+  captchaToken?: string
+) {
   const params = new URLSearchParams({ orderid, email })
+  if (captchaToken) {
+    params.append("cf-turnstile-response", captchaToken)
+  }
   const response = await fetch(
     `${MEDUSA_BACKEND_URL}/store/order-tracking?${params.toString()}`,
     {
@@ -56,6 +63,11 @@ export async function retrieveOrderTracking(orderid: string, email: string) {
 
   if (response.status === 404) {
     return null
+  }
+
+  if (response.status === 403) {
+    // Middleware de captcha rejeitou o token (ausente/expirado/inválido).
+    throw new Error("ORDER_TRACKING_CAPTCHA_FAILED")
   }
 
   if (!response.ok) {

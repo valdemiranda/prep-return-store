@@ -1,5 +1,11 @@
+"use client"
+
+import { useState } from "react"
 import { Input } from "@modules/common/components/ui/input"
 import { Button } from "@modules/common/components/ui/button"
+import Turnstile, {
+  isTurnstileConfigured,
+} from "@modules/common/components/turnstile"
 
 export default function TrackingForm({
   defaultOrderId = "",
@@ -8,6 +14,10 @@ export default function TrackingForm({
   defaultOrderId?: string
   defaultEmail?: string
 }) {
+  const [captchaToken, setCaptchaToken] = useState("")
+  // Quando o captcha está habilitado, exige o token antes de habilitar o envio.
+  const captchaReady = !isTurnstileConfigured || Boolean(captchaToken)
+
   return (
     <form
       method="GET"
@@ -35,7 +45,15 @@ export default function TrackingForm({
         placeholder="you@example.com"
         required
       />
-      <Button type="submit" variant="primary" className="w-full mt-2">
+      {isTurnstileConfigured && (
+        <Turnstile onVerify={setCaptchaToken} />
+      )}
+      <Button
+        type="submit"
+        variant="primary"
+        className="w-full mt-2"
+        disabled={!captchaReady}
+      >
         Track Order
       </Button>
     </form>

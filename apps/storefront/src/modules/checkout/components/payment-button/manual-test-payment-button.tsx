@@ -2,6 +2,9 @@
 
 import { placeOrder } from "@lib/data/cart"
 import { Button } from "@modules/common/components/ui"
+import Turnstile, {
+  isTurnstileConfigured,
+} from "@modules/common/components/turnstile"
 import { useState } from "react"
 import ErrorMessage from "../error-message"
 
@@ -16,9 +19,12 @@ const ManualTestPaymentButton = ({
 }: ManualTestPaymentButtonProps) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [captchaToken, setCaptchaToken] = useState("")
+  // Quando o captcha está habilitado, exige o token antes de habilitar o envio.
+  const captchaReady = !isTurnstileConfigured || Boolean(captchaToken)
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
+    await placeOrder(undefined, captchaToken)
       .catch((err) => {
         setErrorMessage(err.message)
       })
@@ -28,14 +34,18 @@ const ManualTestPaymentButton = ({
   }
 
   const handlePayment = () => {
+    if (!captchaReady) {
+      return
+    }
     setSubmitting(true)
     onPaymentCompleted()
   }
 
   return (
     <>
+      {isTurnstileConfigured && <Turnstile onVerify={setCaptchaToken} />}
       <Button
-        disabled={notReady}
+        disabled={notReady || !captchaReady}
         isLoading={submitting}
         onClick={handlePayment}
         size="large"

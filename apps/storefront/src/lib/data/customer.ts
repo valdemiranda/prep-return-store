@@ -14,6 +14,9 @@ import {
   removeCartId,
   setAuthToken,
 } from "./cookies"
+import { verifyCaptcha } from "./captcha"
+
+const CAPTCHA_ERROR = "Captcha verification failed. Please try again."
 
 export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {
@@ -68,6 +71,10 @@ export async function signup(_currentState: unknown, formData: FormData) {
     phone: formData.get("phone") as string,
   }
 
+  if (!(await verifyCaptcha(formData.get("cf-turnstile-response") as string))) {
+    return CAPTCHA_ERROR
+  }
+
   try {
     const token = await sdk.auth.register("customer", "emailpass", {
       email: customerForm.email,
@@ -107,6 +114,10 @@ export async function signup(_currentState: unknown, formData: FormData) {
 export async function login(_currentState: unknown, formData: FormData) {
   const email = formData.get("email") as string
   const password = formData.get("password") as string
+
+  if (!(await verifyCaptcha(formData.get("cf-turnstile-response") as string))) {
+    return CAPTCHA_ERROR
+  }
 
   try {
     await sdk.auth

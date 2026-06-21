@@ -20,12 +20,17 @@ export const metadata: Metadata = {
 
 type TrackOrderProps = {
   params: Promise<{ countryCode: string }>
-  searchParams: Promise<{ orderid?: string; email?: string }>
+  searchParams: Promise<{
+    orderid?: string
+    email?: string
+    "cf-turnstile-response"?: string | string[]
+  }>
 }
 
 export default async function TrackOrderPage(props: TrackOrderProps) {
   const { countryCode } = await props.params
-  const { orderid, email } = await props.searchParams
+  const { orderid, email, "cf-turnstile-response": captchaToken } =
+    await props.searchParams
 
   let tracking: OrderTracking | null = null
   let errorMsg: string | null = null
@@ -34,7 +39,11 @@ export default async function TrackOrderPage(props: TrackOrderProps) {
 
   if (orderid && email) {
     try {
-      tracking = await retrieveOrderTracking(orderid, email)
+      tracking = await retrieveOrderTracking(
+        orderid,
+        email,
+        typeof captchaToken === "string" ? captchaToken : undefined
+      )
       if (!tracking) {
         errorMsg = "Order not found. Please check the details and try again."
       } else {
@@ -53,9 +62,11 @@ export default async function TrackOrderPage(props: TrackOrderProps) {
           })
         }
       }
-    } catch {
+    } catch (err) {
       errorMsg =
-        "We could not retrieve this order. Please check the details or try again later."
+        err instanceof Error && err.message === "ORDER_TRACKING_CAPTCHA_FAILED"
+          ? "Captcha verification failed. Please complete it and try again."
+          : "We could not retrieve this order. Please check the details or try again later."
     }
   }
 
