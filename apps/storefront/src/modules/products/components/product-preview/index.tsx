@@ -72,7 +72,7 @@ export default function ProductPreview({
             </LocalizedClientLink>
             <CompactCondition product={product} />
             {cheapestPrice && (
-              <div className="flex justify-center h-6 items-center">
+              <div className="flex justify-center min-h-[1.5rem] items-center">
                 <PreviewPrice price={cheapestPrice} product={product} />
               </div>
             )}
