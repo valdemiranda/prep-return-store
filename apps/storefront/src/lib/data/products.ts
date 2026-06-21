@@ -54,7 +54,7 @@ export const listProducts = async ({
   }
 
   const next = {
-    ...(await getCacheOptions("products")),
+    ...(await getCacheOptions("products", { global: true })),
   }
 
   return sdk.client

@@ -82,7 +82,7 @@ async function attachVariantInventory(
   }
 
   const next = {
-    ...(await getCacheOptions("products")),
+    ...(await getCacheOptions("products", { global: true })),
   }
 
   const { products } = await sdk.client
@@ -511,8 +511,7 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   const regionCacheTag = await getCacheTag("regions")
   revalidateTag(regionCacheTag)
 
-  const productsCacheTag = await getCacheTag("products")
-  revalidateTag(productsCacheTag)
+  revalidateTag("products")
 
   redirect(`/${countryCode}${currentPath}`)
 }

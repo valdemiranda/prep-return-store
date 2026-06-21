@@ -54,21 +54,11 @@ export const updateLocale = async (localeCode: string): Promise<string> => {
     }
   }
 
-  // Revalidate relevant caches to refresh content
-  const productsCacheTag = await getCacheTag("products")
-  if (productsCacheTag) {
-    revalidateTag(productsCacheTag)
-  }
-
-  const categoriesCacheTag = await getCacheTag("categories")
-  if (categoriesCacheTag) {
-    revalidateTag(categoriesCacheTag)
-  }
-
-  const collectionsCacheTag = await getCacheTag("collections")
-  if (collectionsCacheTag) {
-    revalidateTag(collectionsCacheTag)
-  }
+  // Revalidate relevant caches to refresh content. Catálogo usa tags globais,
+  // então a invalidação alcança todos os visitantes (não só este).
+  revalidateTag("products")
+  revalidateTag("categories")
+  revalidateTag("collections")
 
   return localeCode
 }

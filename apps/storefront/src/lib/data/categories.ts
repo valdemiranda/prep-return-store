@@ -36,7 +36,7 @@ const listAvailableProducts = async (countryCode?: string) => {
 
 export const listCategories = async (query?: Record<string, unknown>) => {
   const next = {
-    ...(await getCacheOptions("categories")),
+    ...(await getCacheOptions("categories", { global: true })),
   }
 
   const limit = query?.limit || 100
@@ -62,7 +62,7 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
   const handle = `${categoryHandle.join("/")}`
 
   const next = {
-    ...(await getCacheOptions("categories")),
+    ...(await getCacheOptions("categories", { global: true })),
   }
 
   return sdk.client

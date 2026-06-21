@@ -33,11 +33,32 @@ export const getCacheTag = async (tag: string): Promise<string> => {
   }
 }
 
+/**
+ * Tempo máximo (segundos) que dados públicos de catálogo (produtos, categorias,
+ * coleções) podem ficar em cache antes de serem revalidados. Rede de segurança
+ * caso o webhook de invalidação (backend) falhe.
+ */
+export const CATALOG_REVALIDATE_SECONDS = 300
+
 export const getCacheOptions = async (
-  tag: string
-): Promise<{ tags: string[] } | Record<string, never>> => {
+  tag: string,
+  options?: { global?: boolean; revalidate?: number }
+): Promise<
+  { tags: string[]; revalidate?: number } | Record<string, never>
+> => {
   if (typeof window !== "undefined") {
     return {}
+  }
+
+  // Dados públicos de catálogo são compartilhados por todos os visitantes, então
+  // usam uma tag GLOBAL (sem o sufixo _medusa_cache_id). Assim o webhook do
+  // backend invalida o cache de todos os visitantes de uma vez via
+  // revalidateTag("products"). Carrinho/cliente/pedido continuam scoped.
+  if (options?.global) {
+    return {
+      tags: [tag],
+      revalidate: options.revalidate ?? CATALOG_REVALIDATE_SECONDS,
+    }
   }
 
   const cacheTag = await getCacheTag(tag)
@@ -46,7 +67,7 @@ export const getCacheOptions = async (
     return {}
   }
 
-  return { tags: [`${cacheTag}`] }
+  return { tags: [cacheTag] }
 }
 
 export const setAuthToken = async (token: string) => {
