@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { ChevronRight } from "lucide-react"
-import { listCategoriesWithAvailableProducts } from "@lib/data/categories"
+import {
+  isRootCategory,
+  listCategoriesWithAvailableProducts,
+} from "@lib/data/categories"
 
 import InteractiveLink from "@modules/common/components/interactive-link"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
@@ -37,6 +40,7 @@ export default async function CategoryTemplate({
   }).catch(() => [])
 
   const activeIds = new Set(categories.map((c) => c.id))
+  const filterCategories = categories.filter(isRootCategory)
   const filteredChildren =
     category.category_children?.filter((c) => activeIds.has(c.id)) || []
 
@@ -84,7 +88,7 @@ export default async function CategoryTemplate({
 
       {/* Main Side-by-side Layout */}
       <div className="flex flex-col small:flex-row small:items-start gap-gutter">
-        <RefinementList categories={categories} />
+        <RefinementList categories={filterCategories} />
         <div className="w-full">
           <div className="mb-6 flex flex-col gap-2 border-b border-surface-container-highest pb-4">
             <p className="text-xs font-bold uppercase tracking-wider text-primary">
