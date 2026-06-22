@@ -1,23 +1,29 @@
 "use server"
 
 import { sdk } from "@lib/config"
+import {
+  hasAvailableStock,
+  withProductAvailabilityFields,
+} from "@lib/util/product-availability"
 import { HttpTypes } from "@medusajs/types"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
 
-export type ProductListQueryParams =
-  HttpTypes.FindParams & HttpTypes.StoreProductListParams
+export type ProductListQueryParams = HttpTypes.FindParams &
+  HttpTypes.StoreProductListParams
 
 export const listProducts = async ({
   pageParam = 1,
   queryParams,
   countryCode,
   regionId,
+  includeUnavailable = false,
 }: {
   pageParam?: number
   queryParams?: ProductListQueryParams
   countryCode?: string
   regionId?: string
+  includeUnavailable?: boolean
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
@@ -54,6 +60,14 @@ export const listProducts = async ({
     ...(await getCacheOptions("products", { global: true })),
   }
 
+  const fields = includeUnavailable
+    ? (queryParams?.fields ??
+      "*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,")
+    : withProductAvailabilityFields(
+        queryParams?.fields ??
+          "*variants.calculated_price,*variants.images,+metadata,+tags,",
+      )
+
   return sdk.client
     .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
       `/store/products`,
@@ -63,22 +77,25 @@ export const listProducts = async ({
           limit,
           offset,
           region_id: region?.id,
-          fields:
-            "*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,",
           ...queryParams,
+          fields,
         },
         headers,
         next,
         cache: "force-cache",
-      }
+      },
     )
     .then(({ products, count }) => {
+      const visibleProducts = includeUnavailable
+        ? products
+        : products.filter(hasAvailableStock)
+      const visibleCount = includeUnavailable ? count : visibleProducts.length
       const nextPage = count > offset + limit ? pageParam + 1 : null
 
       return {
         response: {
-          products,
-          count,
+          products: visibleProducts,
+          count: visibleCount,
         },
         nextPage,
         queryParams,
