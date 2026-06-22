@@ -4,7 +4,6 @@ type FilterOption = {
 }
 
 type FilterSectionProps = {
-  maxHeight?: boolean
   multiple?: boolean
   onChange: (value: string, checked: boolean) => void
   options: FilterOption[]
@@ -13,7 +12,6 @@ type FilterSectionProps = {
 }
 
 const FilterSection = ({
-  maxHeight,
   multiple = true,
   onChange,
   options,
@@ -25,7 +23,7 @@ const FilterSection = ({
       <h3 className="mb-3 font-sans text-xs font-bold uppercase tracking-wider text-on-surface">
         {title}
       </h3>
-      <div className={maxHeight ? "space-y-2 max-h-56 overflow-y-auto no-scrollbar" : "space-y-2"}>
+      <div className="space-y-2">
         {options.map((option) => {
           const isChecked = selected.includes(option.value)
 

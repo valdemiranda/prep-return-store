@@ -91,7 +91,6 @@ export default function RefinementList({
       <div className={`${isOpen ? "block" : "hidden"} small:block space-y-6 bg-white border border-outline-variant p-5 rounded-sm`}>
         {categories.length > 0 && (
           <FilterSection
-            maxHeight
             multiple={false}
             onChange={handleCategoryChange}
             options={categoryOptions}
