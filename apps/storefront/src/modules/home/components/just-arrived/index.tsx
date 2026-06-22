@@ -18,11 +18,16 @@ const JustArrived = async ({
   } = await listProducts({
     countryCode,
     queryParams: {
+      // Fetch newest-first from the API so the slice below reflects the real
+      // latest registrations — without `order`, /store/products returns its
+      // default ordering and we'd only re-sort an arbitrary subset.
+      order: "-created_at",
       limit: 24,
-      fields: "*variants.calculated_price",
     },
   })
 
+  // Safety net: the API already returns newest-first, but keep an explicit
+  // client-side sort so the order holds even if `order` is ever dropped.
   const latest = sortProducts(products, "created_at").slice(0, PRODUCTS_TO_SHOW)
 
   if (latest.length === 0) {
