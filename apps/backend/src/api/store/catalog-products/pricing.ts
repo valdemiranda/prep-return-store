@@ -26,12 +26,21 @@ const isSalePrice = (price?: Price | null) =>
   price?.price_list_type === "sale";
 
 function hasAvailableStock(product: any) {
-  return (product.variants ?? []).some((variant: any) => {
+  const variants = product.variants ?? [];
+  if (!variants.length) {
+    return true;
+  }
+
+  return variants.some((variant: any) => {
     if (variant.allow_backorder || !variant.manage_inventory) {
       return true;
     }
 
-    return Number(variant.inventory_quantity ?? 0) > 0;
+    if (variant.inventory_quantity === undefined) {
+      return true;
+    }
+
+    return Number(variant.inventory_quantity) > 0;
   });
 }
 
