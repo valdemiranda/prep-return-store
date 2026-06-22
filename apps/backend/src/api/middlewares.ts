@@ -88,6 +88,11 @@ export default defineMiddlewares({
       middlewares: [verifyCaptcha],
     },
     {
+      matcher: "/store/support",
+      methods: ["POST"],
+      middlewares: [verifyCaptcha],
+    },
+    {
       matcher: "/store/order-tracking",
       methods: ["GET"],
       middlewares: [verifyCaptcha],

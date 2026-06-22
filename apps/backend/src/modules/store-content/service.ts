@@ -12,6 +12,16 @@ type StoreContentRecord = {
 const MAIN_KEY = "main"
 const LEGACY_HERO_IMAGE = "/hero-small-goods.png"
 
+function mergeStaticPages(data?: Partial<StoreContentData["staticPages"]>) {
+  return {
+    termsOfUse:
+      data?.termsOfUse ?? DEFAULT_STORE_CONTENT.staticPages.termsOfUse,
+    privacy: data?.privacy ?? DEFAULT_STORE_CONTENT.staticPages.privacy,
+    returnPolicy:
+      data?.returnPolicy ?? DEFAULT_STORE_CONTENT.staticPages.returnPolicy,
+  }
+}
+
 function mergeContent(data?: Partial<StoreContentData>): StoreContentData {
   const content = {
     ...DEFAULT_STORE_CONTENT,
@@ -20,10 +30,7 @@ function mergeContent(data?: Partial<StoreContentData>): StoreContentData {
       ...DEFAULT_STORE_CONTENT.hero,
       ...data?.hero,
     },
-    staticPages: {
-      ...DEFAULT_STORE_CONTENT.staticPages,
-      ...data?.staticPages,
-    },
+    staticPages: mergeStaticPages(data?.staticPages),
     benefitCards: data?.benefitCards ?? DEFAULT_STORE_CONTENT.benefitCards,
     promotionalBanners:
       data?.promotionalBanners ?? DEFAULT_STORE_CONTENT.promotionalBanners,

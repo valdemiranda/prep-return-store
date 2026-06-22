@@ -33,7 +33,6 @@ export interface PromotionalBanner {
 }
 
 export interface StaticPages {
-  support: string
   termsOfUse: string
   privacy: string
   returnPolicy: string

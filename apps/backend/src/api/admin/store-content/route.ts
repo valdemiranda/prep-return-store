@@ -34,7 +34,6 @@ const storeContentSchema = z.object({
     })
   ),
   staticPages: z.object({
-    support: z.string(),
     termsOfUse: z.string(),
     privacy: z.string(),
     returnPolicy: z.string(),

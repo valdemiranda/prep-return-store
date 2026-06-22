@@ -34,6 +34,7 @@
     "@medusajs/medusa": "2.15.3",
     "@medusajs/ui": "4.1.13",
     "@paypal/paypal-server-sdk": "^2.3.0",
+    "@sendgrid/mail": "^8.1.6",
     "@tanstack/react-query": "5.64.2",
     "lucide-react": "^1.17.0",
     "posthog-node": "^5.11.0",

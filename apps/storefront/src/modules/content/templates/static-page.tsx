@@ -1,7 +1,6 @@
 import { getStoreContent } from "@lib/data/store-content"
 
 const titles = {
-  support: "Support",
   termsOfUse: "Terms of Use",
   privacy: "Privacy",
   returnPolicy: "Return Policy",

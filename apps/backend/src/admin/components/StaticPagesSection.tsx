@@ -26,20 +26,6 @@ export const StaticPagesSection: React.FC<StaticPagesSectionProps> = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="support-page" className="text-xs font-semibold text-on-surface-variant">
-            Support Page HTML
-          </Label>
-          <Textarea
-            id="support-page"
-            placeholder="<h1>Support</h1><p>Contact us at support@example.com</p>"
-            value={value.support || ""}
-            onChange={(e) => handleChange("support", e.target.value)}
-            rows={8}
-            className="font-mono bg-surface-container border border-outline-variant rounded-[4px] focus:ring-2 focus:ring-primary focus:border-primary text-sm p-3"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
           <Label htmlFor="terms-page" className="text-xs font-semibold text-on-surface-variant">
             Terms of Use HTML
           </Label>

@@ -52,7 +52,6 @@ export const DEFAULT_STORE_CONTENT: StoreContent = {
   ],
   promotionalBanners: [],
   staticPages: {
-    support: "<h1>Support</h1><p>Contact our team for help with your order.</p>",
     termsOfUse:
       "<h1>Terms of Use</h1><p>Review the terms that govern purchases from our store.</p>",
     privacy:
