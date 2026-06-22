@@ -1,4 +1,4 @@
-import { listCategoriesWithAvailableProducts } from "@lib/data/categories"
+import { listRootCategoriesWithAvailableProducts } from "@lib/data/categories"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import {
   Armchair,
@@ -38,7 +38,9 @@ export default async function CategoryList({
 }: {
   countryCode?: string
 }) {
-  const categories = await listCategoriesWithAvailableProducts({ countryCode })
+  const categories = await listRootCategoriesWithAvailableProducts({
+    countryCode,
+  })
   const sortedCategories = [...(categories || [])].sort((a, b) =>
     (a.name || "").localeCompare(b.name || "")
   )

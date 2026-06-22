@@ -116,3 +116,21 @@ export const listCategoriesWithAvailableProducts = async ({
 
   return filteredCategories
 }
+
+export const isRootCategory = (category: HttpTypes.StoreProductCategory) =>
+  !category.parent_category_id && !category.parent_category?.id
+
+export const listRootCategoriesWithAvailableProducts = async ({
+  countryCode,
+  query,
+}: {
+  countryCode?: string
+  query?: Record<string, unknown>
+}) => {
+  const categories = await listCategoriesWithAvailableProducts({
+    countryCode,
+    query,
+  })
+
+  return categories.filter(isRootCategory)
+}

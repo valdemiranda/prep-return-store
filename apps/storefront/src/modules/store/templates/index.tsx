@@ -5,7 +5,7 @@ import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-g
 import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { listCategoriesWithAvailableProducts } from "@lib/data/categories"
+import { listRootCategoriesWithAvailableProducts } from "@lib/data/categories"
 import { listCatalogProducts } from "@lib/data/catalog-products"
 
 import PaginatedProducts from "./paginated-products"
@@ -33,7 +33,7 @@ const StoreTemplate = async ({
 }) => {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
-  const categories = await listCategoriesWithAvailableProducts({
+  const categories = await listRootCategoriesWithAvailableProducts({
     countryCode,
   }).catch(() => [])
 
