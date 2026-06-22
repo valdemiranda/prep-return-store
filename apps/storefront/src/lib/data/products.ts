@@ -1,15 +1,12 @@
 "use server"
 
 import { sdk } from "@lib/config"
-import { sortProducts } from "@lib/util/sort-products"
-import {
-  filterProductsByPrice,
-  filterProductsBySale,
-} from "@lib/util/product-filters"
 import { HttpTypes } from "@medusajs/types"
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
+
+export type ProductListQueryParams =
+  HttpTypes.FindParams & HttpTypes.StoreProductListParams
 
 export const listProducts = async ({
   pageParam = 1,
@@ -18,13 +15,13 @@ export const listProducts = async ({
   regionId,
 }: {
   pageParam?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
+  queryParams?: ProductListQueryParams
   countryCode?: string
   regionId?: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
+  queryParams?: ProductListQueryParams
 }> => {
   if (!countryCode && !regionId) {
     throw new Error("Country code or region ID is required")
@@ -87,64 +84,4 @@ export const listProducts = async ({
         queryParams,
       }
     })
-}
-
-export const listProductsWithSort = async ({
-  page = 0,
-  queryParams,
-  sortBy = "created_at",
-  countryCode,
-  price,
-  sale,
-  newArrivals,
-}: {
-  page?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
-  sortBy?: SortOptions
-  countryCode: string
-  price?: string
-  sale?: string
-  newArrivals?: string
-}): Promise<{
-  response: { products: HttpTypes.StoreProduct[]; count: number }
-  nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
-}> => {
-  const limit = queryParams?.limit || 12
-  const fetchLimit = newArrivals === "true" ? 50 : 100
-
-  const {
-    response: { products },
-  } = await listProducts({
-    pageParam: 0,
-    queryParams: {
-      ...queryParams,
-      limit: fetchLimit,
-      order: newArrivals === "true" ? "-created_at" : queryParams?.order,
-    },
-    countryCode,
-  })
-
-  const filteredProducts = filterProductsByPrice(
-    filterProductsBySale(products, sale),
-    price
-  )
-
-  const sortedProducts = newArrivals === "true"
-    ? sortProducts(filteredProducts, "created_at").slice(0, 50)
-    : sortProducts(filteredProducts, sortBy)
-
-  const pageParam = (page - 1) * limit
-  const filteredCount = sortedProducts.length
-  const nextPage = filteredCount > pageParam + limit ? pageParam + limit : null
-  const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit)
-
-  return {
-    response: {
-      products: paginatedProducts,
-      count: filteredCount,
-    },
-    nextPage,
-    queryParams,
-  }
 }

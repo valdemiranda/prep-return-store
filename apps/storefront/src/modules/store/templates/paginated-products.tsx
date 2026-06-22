@@ -1,11 +1,11 @@
-import { listProductsWithSort } from "@lib/data/products"
+import { listProductsWithSort } from "@lib/data/products-with-sort"
 import { getRegion } from "@lib/data/regions"
 import ProductPreview from "@modules/products/components/product-preview"
 import { Pagination } from "@modules/store/components/pagination"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import SortProducts from "@modules/store/components/refinement-list/sort-products"
 
-const PRODUCT_LIMIT = 12
+const DEFAULT_PRODUCT_LIMIT = 12
 
 type PaginatedProductsParams = {
   limit: number
@@ -28,6 +28,7 @@ export default async function PaginatedProducts({
   price,
   sale,
   newArrivals,
+  limit = DEFAULT_PRODUCT_LIMIT,
 }: {
   sortBy?: SortOptions
   page: number
@@ -40,9 +41,10 @@ export default async function PaginatedProducts({
   price?: string
   sale?: string
   newArrivals?: string
+  limit?: number
 }) {
   const queryParams: PaginatedProductsParams = {
-    limit: 12,
+    limit,
   }
 
   if (collectionId) {
@@ -85,7 +87,7 @@ export default async function PaginatedProducts({
     newArrivals,
   })
 
-  const totalPages = Math.ceil(count / PRODUCT_LIMIT)
+  const totalPages = Math.ceil(count / limit)
   const sort = sortBy || "created_at"
 
   return (

@@ -1,38 +1,11 @@
 import { sdk } from "@lib/config"
 import { HttpTypes } from "@medusajs/types"
+import {
+  emptyAvailableCategoryData,
+  getRepresentativeProducts,
+  listAvailableCategoryData,
+} from "./category-availability"
 import { getCacheOptions } from "./cookies"
-import { listProducts } from "./products"
-import { isProductAvailable } from "@lib/util/product"
-
-const availableProductCategoryFields =
-  "*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder,*variants.images,+metadata,+tags,+categories.id,+categories.name,+categories.parent_category_id,+categories.handle"
-
-const listAvailableProducts = async (countryCode?: string) => {
-  if (!countryCode) {
-    return []
-  }
-
-  const products: HttpTypes.StoreProduct[] = []
-  let pageParam = 1
-  let hasMoreProducts = true
-
-  while (hasMoreProducts) {
-    const { response, nextPage } = await listProducts({
-      pageParam,
-      countryCode,
-      queryParams: {
-        limit: 100,
-        fields: availableProductCategoryFields,
-      },
-    })
-
-    products.push(...response.products.filter(isProductAvailable))
-    hasMoreProducts = !!nextPage
-    pageParam = nextPage ?? pageParam
-  }
-
-  return products
-}
 
 export const listCategories = async (query?: Record<string, unknown>) => {
   const next = {
@@ -47,7 +20,7 @@ export const listCategories = async (query?: Record<string, unknown>) => {
       {
         query: {
           fields:
-            "*category_children, *products, *products.images, *parent_category, *parent_category.parent_category",
+            "*category_children, *parent_category, *parent_category.parent_category",
           limit,
           ...query,
         },
@@ -70,7 +43,8 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
       `/store/product-categories`,
       {
         query: {
-          fields: "*category_children, *products",
+          fields:
+            "*category_children, *parent_category, *parent_category.parent_category",
           handle,
         },
         next,
@@ -87,9 +61,16 @@ export const listCategoriesWithAvailableProducts = async ({
   countryCode?: string
   query?: Record<string, unknown>
 }) => {
+  if (!countryCode) {
+    return []
+  }
+
   const allCategories = await listCategories(query)
-  const availableProducts = await listAvailableProducts(countryCode).catch(
-    () => [],
+  const availableData = await listAvailableCategoryData().catch(
+    emptyAvailableCategoryData
+  )
+  const categoryImages = new Map(
+    Object.entries(availableData.category_images ?? {})
   )
 
   const categoryMap = new Map<string, HttpTypes.StoreProductCategory>()
@@ -98,24 +79,22 @@ export const listCategoriesWithAvailableProducts = async ({
   }
 
   const activeCategoryIds = new Set<string>()
-  const markActive = (categoryId: string) => {
+  const markActive = (categoryId: string, fallbackImage?: string) => {
+    if (fallbackImage && !categoryImages.has(categoryId)) {
+      categoryImages.set(categoryId, fallbackImage)
+    }
+
     if (activeCategoryIds.has(categoryId)) return
     activeCategoryIds.add(categoryId)
     const cat = categoryMap.get(categoryId)
     const parentId = cat?.parent_category_id || cat?.parent_category?.id
     if (parentId) {
-      markActive(parentId)
+      markActive(parentId, categoryImages.get(categoryId))
     }
   }
 
-  for (const product of availableProducts) {
-    if (product.categories) {
-      for (const cat of product.categories) {
-        if (cat.id) {
-          markActive(cat.id)
-        }
-      }
-    }
+  for (const categoryId of availableData.category_ids) {
+    markActive(categoryId, categoryImages.get(categoryId))
   }
 
   const filteredCategories: HttpTypes.StoreProductCategory[] = []
@@ -129,6 +108,7 @@ export const listCategoriesWithAvailableProducts = async ({
 
       filteredCategories.push({
         ...cat,
+        products: getRepresentativeProducts(cat, categoryImages.get(cat.id)),
         category_children: filteredChildren,
       })
     }

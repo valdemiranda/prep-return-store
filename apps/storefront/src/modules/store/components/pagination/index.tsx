@@ -2,6 +2,7 @@
 
 import { clx } from "@modules/common/components/ui"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export function Pagination({
   page,
@@ -35,11 +36,16 @@ export function Pagination({
   ) => (
     <button
       key={p}
-      className={clx("txt-xlarge-plus text-ui-fg-muted", {
-        "text-ui-fg-base hover:text-ui-fg-subtle": isCurrent,
-      })}
+      className={clx(
+        "min-w-[36px] h-9 px-3 flex items-center justify-center text-sm font-sans font-medium rounded-[4px] border transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary focus-visible:outline-offset-2 disabled:cursor-default",
+        isCurrent
+          ? "bg-primary border-primary text-white font-bold"
+          : "bg-white border-surface-container-highest text-on-surface hover:bg-surface-container"
+      )}
       disabled={isCurrent}
       onClick={() => handlePageChange(p)}
+      aria-label={`Go to page ${p}`}
+      aria-current={isCurrent ? "page" : undefined}
     >
       {label}
     </button>
@@ -49,7 +55,7 @@ export function Pagination({
   const renderEllipsis = (key: string) => (
     <span
       key={key}
-      className="txt-xlarge-plus text-ui-fg-muted items-center cursor-default"
+      className="min-w-[36px] h-9 flex items-center justify-center text-sm font-sans text-on-surface-variant font-medium select-none cursor-default"
     >
       ...
     </span>
@@ -60,16 +66,13 @@ export function Pagination({
     const buttons = []
 
     if (totalPages <= 7) {
-      // Show all pages
       buttons.push(
         ...arrayRange(1, totalPages).map((p) =>
           renderPageButton(p, p, p === page)
         )
       )
     } else {
-      // Handle different cases for displaying pages and ellipses
       if (page <= 4) {
-        // Show 1, 2, 3, 4, 5, ..., lastpage
         buttons.push(
           ...arrayRange(1, 5).map((p) => renderPageButton(p, p, p === page))
         )
@@ -78,7 +81,6 @@ export function Pagination({
           renderPageButton(totalPages, totalPages, totalPages === page)
         )
       } else if (page >= totalPages - 3) {
-        // Show 1, ..., lastpage - 4, lastpage - 3, lastpage - 2, lastpage - 1, lastpage
         buttons.push(renderPageButton(1, 1, 1 === page))
         buttons.push(renderEllipsis("ellipsis2"))
         buttons.push(
@@ -87,7 +89,6 @@ export function Pagination({
           )
         )
       } else {
-        // Show 1, ..., page - 1, page, page + 1, ..., lastpage
         buttons.push(renderPageButton(1, 1, 1 === page))
         buttons.push(renderEllipsis("ellipsis3"))
         buttons.push(
@@ -105,10 +106,32 @@ export function Pagination({
     return buttons
   }
 
-  // Render the component
   return (
     <div className="flex justify-center w-full mt-12">
-      <div className="flex gap-3 items-end" data-testid={dataTestid}>{renderPageButtons()}</div>
+      <div
+        className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
+        data-testid={dataTestid}
+      >
+        <button
+          className="w-9 h-9 flex items-center justify-center text-on-surface bg-white border border-surface-container-highest rounded-[4px] hover:bg-surface-container transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary focus-visible:outline-offset-2 disabled:opacity-40 disabled:bg-surface-container-low disabled:border-surface-container-highest disabled:text-on-surface-variant/40 disabled:pointer-events-none"
+          disabled={page <= 1}
+          onClick={() => handlePageChange(page - 1)}
+          aria-label="Go to previous page"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+
+        {renderPageButtons()}
+
+        <button
+          className="w-9 h-9 flex items-center justify-center text-on-surface bg-white border border-surface-container-highest rounded-[4px] hover:bg-surface-container transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary focus-visible:outline-offset-2 disabled:opacity-40 disabled:bg-surface-container-low disabled:border-surface-container-highest disabled:text-on-surface-variant/40 disabled:pointer-events-none"
+          disabled={page >= totalPages}
+          onClick={() => handlePageChange(page + 1)}
+          aria-label="Go to next page"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
     </div>
   )
 }

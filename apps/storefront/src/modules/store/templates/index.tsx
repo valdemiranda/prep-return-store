@@ -6,11 +6,11 @@ import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { listCategoriesWithAvailableProducts } from "@lib/data/categories"
-import { listProducts } from "@lib/data/products"
-import { getProductPrice } from "@lib/util/get-product-price"
-import { filterProductsBySale } from "@lib/util/product-filters"
+import { listCatalogProducts } from "@lib/data/catalog-products"
 
 import PaginatedProducts from "./paginated-products"
+
+const STORE_PRODUCT_LIMIT = 24
 
 const StoreTemplate = async ({
   sortBy,
@@ -38,9 +38,7 @@ const StoreTemplate = async ({
   }).catch(() => [])
 
   // Calculate actual min/max price for the active product set (excluding price filter itself)
-  const queryParams: any = {
-    limit: 100,
-  }
+  const queryParams: any = {}
   if (filterCategory) {
     queryParams["category_id"] = [filterCategory]
   }
@@ -48,26 +46,20 @@ const StoreTemplate = async ({
     queryParams["q"] = query
   }
 
-  const baseResult = await listProducts({
-    pageParam: 1,
-    queryParams,
+  const priceBounds = await listCatalogProducts({
+    page: 1,
+    queryParams: { ...queryParams, limit: 1 },
+    sortBy: sort,
     countryCode,
-  }).catch(() => null)
+    sale,
+    newArrivals,
+    includeStats: true,
+  })
+    .then(({ price_bounds }) => price_bounds)
+    .catch(() => null)
 
-  const baseProducts = baseResult?.response?.products || []
-  const filteredBaseProducts = filterProductsBySale(baseProducts, sale)
-
-  const priceNumbers = filteredBaseProducts
-    .map(
-      (p) =>
-        getProductPrice({ product: p }).cheapestPrice?.calculated_price_number,
-    )
-    .filter((p): p is number => p !== undefined)
-
-  const minPrice =
-    priceNumbers.length > 0 ? Math.floor(Math.min(...priceNumbers)) : 0
-  const maxPrice =
-    priceNumbers.length > 0 ? Math.ceil(Math.max(...priceNumbers)) : 1000
+  const minPrice = priceBounds?.min ?? 0
+  const maxPrice = priceBounds?.max ?? 1000
 
   const pageTitle = query
     ? `Results for "${query}"`
@@ -123,6 +115,7 @@ const StoreTemplate = async ({
               price={price}
               sale={sale}
               newArrivals={newArrivals}
+              limit={STORE_PRODUCT_LIMIT}
             />
           </Suspense>
         </div>
