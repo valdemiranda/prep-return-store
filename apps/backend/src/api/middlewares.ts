@@ -5,6 +5,7 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import {
+  adminBatchProductSlugMiddleware,
   adminCategorySlugMiddleware,
   adminProductSlugMiddleware,
 } from "./admin/catalog-slug-middlewares"
@@ -90,6 +91,11 @@ export default defineMiddlewares({
       matcher: "/admin/products",
       methods: ["POST"],
       middlewares: [adminProductSlugMiddleware],
+    },
+    {
+      matcher: "/admin/products/batch",
+      methods: ["POST"],
+      middlewares: [adminBatchProductSlugMiddleware],
     },
     {
       matcher: "/admin/product-categories",
