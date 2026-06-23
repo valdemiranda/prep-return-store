@@ -4,6 +4,10 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  adminCategorySlugMiddleware,
+  adminProductSlugMiddleware,
+} from "./admin/catalog-slug-middlewares"
 import { getClientIp } from "../utils/client-ip"
 import { rateLimit } from "../utils/rate-limit"
 import { verifyTurnstile } from "../utils/verify-turnstile"
@@ -82,6 +86,16 @@ async function adminLoginRateLimit(
 
 export default defineMiddlewares({
   routes: [
+    {
+      matcher: "/admin/products",
+      methods: ["POST"],
+      middlewares: [adminProductSlugMiddleware],
+    },
+    {
+      matcher: "/admin/product-categories",
+      methods: ["POST"],
+      middlewares: [adminCategorySlugMiddleware],
+    },
     {
       matcher: "/store/newsletter",
       methods: ["POST"],
