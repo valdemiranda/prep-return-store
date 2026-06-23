@@ -1,6 +1,6 @@
 import { Disclosure } from "@headlessui/react"
 import { Badge, Button, clx } from "@modules/common/components/ui"
-import { useEffect } from "react"
+import { useEffect, type MouseEvent } from "react"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
 import { useFormStatus } from "react-dom"
@@ -26,13 +26,20 @@ const AccountInfo = ({
   children,
   'data-testid': dataTestid
 }: AccountInfoProps) => {
-  const { state, close, toggle } = useToggleState()
+  const { state, open, close } = useToggleState()
 
   const { pending } = useFormStatus()
 
-  const handleToggle = () => {
+  const handleToggle = (event: MouseEvent<HTMLButtonElement>) => {
     clearState()
-    setTimeout(() => toggle(), 100)
+
+    if (state) {
+      event.currentTarget.form?.reset()
+      close()
+      return
+    }
+
+    open()
   }
 
   useEffect(() => {
@@ -59,7 +66,7 @@ const AccountInfo = ({
             variant="secondary"
             className="w-[100px] min-h-[25px] py-1"
             onClick={handleToggle}
-            type={state ? "reset" : "button"}
+            type="button"
             data-testid="edit-button"
             data-active={state}
           >
@@ -82,7 +89,7 @@ const AccountInfo = ({
           data-testid="success-message"
         >
           <Badge className="p-2 my-4" color="green">
-            <span>{label} updated succesfully</span>
+            <span>{label} updated successfully</span>
           </Badge>
         </Disclosure.Panel>
       </Disclosure>
@@ -110,10 +117,10 @@ const AccountInfo = ({
         <Disclosure.Panel
           static
           className={clx(
-            "transition-[max-height,opacity] duration-300 ease-in-out overflow-visible",
+            "transition-[max-height,opacity] duration-300 ease-in-out",
             {
-              "max-h-[1000px] opacity-100": state,
-              "max-h-0 opacity-0": !state,
+              "max-h-[1000px] overflow-visible opacity-100": state,
+              "pointer-events-none max-h-0 overflow-hidden opacity-0": !state,
             }
           )}
         >

@@ -15,16 +15,13 @@ type MyInformationProps = {
 const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
-  // TODO: It seems we don't support updating emails now?
   const updateCustomerEmail = (
     _currentState: Record<string, unknown>,
     _formData: FormData
   ) => {
-    try {
-      // email: formData.get("email") as string
-      return { success: true, error: null }
-    } catch (error) {
-      return { success: false, error: String(error) }
+    return {
+      success: false,
+      error: "Email updates are not available from the storefront yet.",
     }
   }
 
