@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import {
   ArrowPath,
   ArchiveBox,
@@ -32,14 +32,14 @@ import {
   Target,
   TruckFast,
   Wrench,
-} from "@medusajs/icons"
+} from "@medusajs/icons";
 
-type IconComponent = React.ComponentType<{ className?: string }>
+type IconComponent = React.ComponentType<{ className?: string }>;
 
-export const benefitIconOptions: {
-  value: string
-  label: string
-  Icon: IconComponent
+export const iconOptions: {
+  value: string;
+  label: string;
+  Icon: IconComponent;
 }[] = [
   { value: "truck", label: "Delivery", Icon: TruckFast },
   { value: "shield-check", label: "Secure", Icon: ShieldCheck },
@@ -73,9 +73,9 @@ export const benefitIconOptions: {
   { value: "rocket", label: "Launch", Icon: RocketLaunch },
   { value: "target", label: "Goals", Icon: Target },
   { value: "wrench", label: "Service", Icon: Wrench },
-]
+];
 
-export const benefitIconMap = benefitIconOptions.reduce(
+export const iconMap = iconOptions.reduce(
   (icons, option) => ({ ...icons, [option.value]: option.Icon }),
-  {} as Record<string, IconComponent>
-)
+  {} as Record<string, IconComponent>,
+);

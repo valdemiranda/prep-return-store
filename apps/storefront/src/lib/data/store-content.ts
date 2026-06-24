@@ -3,19 +3,13 @@ import { sdk } from "@lib/config"
 export type HeroContent = {
   backgroundImage: string
   imageAlt: string
-  eyebrow: string
-  title: string
-  subtitle: string
   primaryCtaLabel: string
   primaryCtaLink: string
+  primaryCtaIcon?: string
   secondaryCtaLabel: string
   secondaryCtaLink: string
-}
-
-export type BenefitCard = {
-  icon: string
-  title: string
-  subtitle: string
+  secondaryCtaIcon?: string
+  ctaPosition?: string
 }
 
 export type PromotionalBanner = {
@@ -26,7 +20,6 @@ export type PromotionalBanner = {
 
 export type StoreContent = {
   hero: HeroContent
-  benefitCards: BenefitCard[]
   promotionalBanners: PromotionalBanner[]
   staticPages: Record<string, string>
 }
@@ -35,21 +28,14 @@ export const DEFAULT_STORE_CONTENT: StoreContent = {
   hero: {
     backgroundImage: "",
     imageAlt: "",
-    eyebrow: "WAREHOUSE DEALS",
-    title: "Up to 70% OFF on Electronics & Home",
-    subtitle:
-      "Upgrade your space with wholesale pricing. New loads arriving daily direct from major retailers.",
     primaryCtaLabel: "Shop Deals",
     primaryCtaLink: "/store?sale=true",
+    primaryCtaIcon: "tag",
     secondaryCtaLabel: "New Arrivals",
     secondaryCtaLink: "/store?new_arrivals=true",
+    secondaryCtaIcon: "sparkles",
+    ctaPosition: "left-center",
   },
-  benefitCards: [
-    { icon: "truck", title: "Free Shipping", subtitle: "On orders over $50" },
-    { icon: "shield-check", title: "Secure Payment", subtitle: "100% protected" },
-    { icon: "headphones", title: "24/7 Support", subtitle: "Dedicated support" },
-    { icon: "rotate-ccw", title: "Easy Returns", subtitle: "30-day returns" },
-  ],
   promotionalBanners: [],
   staticPages: {
     termsOfUse:

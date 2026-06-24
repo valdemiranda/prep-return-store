@@ -1,16 +1,21 @@
-import { MedusaService } from "@medusajs/framework/utils"
+import { MedusaService } from "@medusajs/framework/utils";
 
-import { DEFAULT_STORE_CONTENT, StoreContentData } from "./defaults"
-import StoreContent from "./models/store-content"
+import {
+  CTA_POSITIONS,
+  DEFAULT_STORE_CONTENT,
+  HeroCtaPosition,
+  StoreContentData,
+} from "./defaults";
+import StoreContent from "./models/store-content";
 
 type StoreContentRecord = {
-  id: string
-  key: string
-  data: StoreContentData
-}
+  id: string;
+  key: string;
+  data: Partial<StoreContentData>;
+};
 
-const MAIN_KEY = "main"
-const LEGACY_HERO_IMAGE = "/hero-small-goods.png"
+const MAIN_KEY = "main";
+const LEGACY_HERO_IMAGE = "/hero-small-goods.png";
 
 function mergeStaticPages(data?: Partial<StoreContentData["staticPages"]>) {
   return {
@@ -19,32 +24,47 @@ function mergeStaticPages(data?: Partial<StoreContentData["staticPages"]>) {
     privacy: data?.privacy ?? DEFAULT_STORE_CONTENT.staticPages.privacy,
     returnPolicy:
       data?.returnPolicy ?? DEFAULT_STORE_CONTENT.staticPages.returnPolicy,
-  }
+  };
+}
+
+function normalizeCtaPosition(position?: string): HeroCtaPosition {
+  return CTA_POSITIONS.includes(position as HeroCtaPosition)
+    ? (position as HeroCtaPosition)
+    : (DEFAULT_STORE_CONTENT.hero.ctaPosition ?? "left-center");
 }
 
 function mergeContent(data?: Partial<StoreContentData>): StoreContentData {
-  const content = {
-    ...DEFAULT_STORE_CONTENT,
-    ...data,
+  const hero = {
+    ...DEFAULT_STORE_CONTENT.hero,
+    ...data?.hero,
+  };
+
+  const content: StoreContentData = {
     hero: {
-      ...DEFAULT_STORE_CONTENT.hero,
-      ...data?.hero,
+      backgroundImage: hero.backgroundImage,
+      imageAlt: hero.imageAlt,
+      primaryCtaLabel: hero.primaryCtaLabel,
+      primaryCtaLink: hero.primaryCtaLink,
+      primaryCtaIcon: hero.primaryCtaIcon,
+      secondaryCtaLabel: hero.secondaryCtaLabel,
+      secondaryCtaLink: hero.secondaryCtaLink,
+      secondaryCtaIcon: hero.secondaryCtaIcon,
+      ctaPosition: normalizeCtaPosition(hero.ctaPosition),
     },
     staticPages: mergeStaticPages(data?.staticPages),
-    benefitCards: data?.benefitCards ?? DEFAULT_STORE_CONTENT.benefitCards,
     promotionalBanners:
       data?.promotionalBanners ?? DEFAULT_STORE_CONTENT.promotionalBanners,
-  }
+  };
 
   if (content.hero.backgroundImage === LEGACY_HERO_IMAGE) {
-    content.hero.backgroundImage = ""
+    content.hero.backgroundImage = "";
   }
 
   content.promotionalBanners = content.promotionalBanners.filter(
-    (banner) => !banner.image.startsWith("/promos/")
-  )
+    (banner) => !banner.image.startsWith("/promos/"),
+  );
 
-  return content
+  return content;
 }
 
 class StoreContentModuleService extends MedusaService({
@@ -53,35 +73,35 @@ class StoreContentModuleService extends MedusaService({
   async retrieveMainContent(): Promise<StoreContentData> {
     const records = (await this.listStoreContents(
       { key: MAIN_KEY },
-      { take: 1 }
-    )) as unknown as StoreContentRecord[]
+      { take: 1 },
+    )) as unknown as StoreContentRecord[];
 
-    return mergeContent(records[0]?.data)
+    return mergeContent(records[0]?.data);
   }
 
   async upsertMainContent(
-    data: Partial<StoreContentData>
+    data: Partial<StoreContentData>,
   ): Promise<StoreContentData> {
     const records = (await this.listStoreContents(
       { key: MAIN_KEY },
-      { take: 1 }
-    )) as unknown as StoreContentRecord[]
-    const content = mergeContent(data)
+      { take: 1 },
+    )) as unknown as StoreContentRecord[];
+    const content = mergeContent(data);
 
     if (records[0]) {
       await this.updateStoreContents({
         id: records[0].id,
         data: content,
-      })
+      });
     } else {
       await this.createStoreContents({
         key: MAIN_KEY,
         data: content,
-      })
+      });
     }
 
-    return content
+    return content;
   }
 }
 
-export default StoreContentModuleService
+export default StoreContentModuleService;

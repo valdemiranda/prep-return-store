@@ -1,63 +1,57 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { z } from "zod"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
+import { z } from "zod";
 
-import StoreContentModuleService from "../../../modules/store-content/service"
-import { STORE_CONTENT_MODULE } from "../../../modules/store-content"
+import StoreContentModuleService from "../../../modules/store-content/service";
+import { STORE_CONTENT_MODULE } from "../../../modules/store-content";
+import { CTA_POSITIONS } from "../../../modules/store-content/defaults";
 
-const text = z.string().trim()
-const link = z.string().trim().default("")
+const text = z.string().trim();
+const link = z.string().trim().default("");
 
 const storeContentSchema = z.object({
-  hero: z.object({
-    backgroundImage: text,
-    imageAlt: text,
-    eyebrow: text,
-    title: text,
-    subtitle: text,
-    primaryCtaLabel: text,
-    primaryCtaLink: link,
-    secondaryCtaLabel: text,
-    secondaryCtaLink: link,
-  }),
-  benefitCards: z.array(
-    z.object({
-      icon: z.string(),
-      title: text,
-      subtitle: text,
+  hero: z
+    .object({
+      backgroundImage: text,
+      imageAlt: text,
+      primaryCtaLabel: text,
+      primaryCtaLink: link,
+      primaryCtaIcon: z.string().optional(),
+      secondaryCtaLabel: text,
+      secondaryCtaLink: link,
+      secondaryCtaIcon: z.string().optional(),
+      ctaPosition: z.enum(CTA_POSITIONS).optional(),
     })
-  ),
+    .passthrough(),
   promotionalBanners: z.array(
     z.object({
       image: text,
       ctaLink: link,
       accessibilityLabel: text,
-    })
+    }),
   ),
   staticPages: z.object({
     termsOfUse: z.string(),
     privacy: z.string(),
     returnPolicy: z.string(),
   }),
-})
+});
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const service: StoreContentModuleService = req.scope.resolve(
-    STORE_CONTENT_MODULE
-  )
+  const service: StoreContentModuleService =
+    req.scope.resolve(STORE_CONTENT_MODULE);
 
   res.json({
     store_content: await service.retrieveMainContent(),
-  })
+  });
 }
 
 export async function PUT(req: MedusaRequest, res: MedusaResponse) {
-  const service: StoreContentModuleService = req.scope.resolve(
-    STORE_CONTENT_MODULE
-  )
-  const body = req.body as { store_content?: unknown }
-  const storeContent = storeContentSchema.parse(body.store_content)
+  const service: StoreContentModuleService =
+    req.scope.resolve(STORE_CONTENT_MODULE);
+  const body = req.body as { store_content?: unknown };
+  const storeContent = storeContentSchema.parse(body.store_content);
 
   res.json({
     store_content: await service.upsertMainContent(storeContent),
-  })
+  });
 }

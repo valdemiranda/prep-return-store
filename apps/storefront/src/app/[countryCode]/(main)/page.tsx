@@ -41,10 +41,7 @@ export default async function Home(props: {
 
   return (
     <>
-      <Hero
-        content={storeContent.hero}
-        benefitCards={storeContent.benefitCards}
-      />
+      <Hero content={storeContent.hero} />
       <CategoryList countryCode={countryCode} />
       <div className="content-container">
         <div className="flex flex-col xlarge:flex-row xlarge:items-start xlarge:gap-gutter">

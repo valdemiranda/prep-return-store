@@ -1,16 +1,17 @@
-import { ChangeEvent, useRef, useState } from "react"
-import { Button, Input, Label, toast } from "@medusajs/ui"
-import { ArrowUpTray, Image } from "@medusajs/icons"
+import { ChangeEvent, useRef, useState } from "react";
+import { Button, Input, Label, toast } from "@medusajs/ui";
+import { ArrowUpTray, Image } from "@medusajs/icons";
 
-import { uploadImage } from "../lib/sdk"
+import { uploadImage } from "../lib/sdk";
 
 type ImageUrlFieldProps = {
-  id: string
-  label: string
-  value: string
-  onChange: (value: string) => void
-  previewAlt?: string
-}
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  previewAlt?: string;
+  hidePreview?: boolean;
+};
 
 export function ImageUrlField({
   id,
@@ -18,27 +19,28 @@ export function ImageUrlField({
   value,
   onChange,
   previewAlt = "Image preview",
+  hidePreview = false,
 }: ImageUrlFieldProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [isUploading, setIsUploading] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (!file) {
-      return
+      return;
     }
 
-    setIsUploading(true)
+    setIsUploading(true);
     try {
-      onChange(await uploadImage(file))
-      toast.success("Image uploaded")
+      onChange(await uploadImage(file));
+      toast.success("Image uploaded");
     } catch {
-      toast.error("Image upload failed")
+      toast.error("Image upload failed");
     } finally {
-      setIsUploading(false)
-      event.target.value = ""
+      setIsUploading(false);
+      event.target.value = "";
     }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -68,17 +70,19 @@ export function ImageUrlField({
           <ArrowUpTray className="h-4 w-4" />
         </Button>
       </div>
-      <div className="flex min-h-[92px] items-center justify-center overflow-hidden rounded border border-ui-border-base bg-ui-bg-subtle">
-        {value ? (
-          <img
-            src={value}
-            alt={previewAlt}
-            className="h-full max-h-[140px] w-full object-cover"
-          />
-        ) : (
-          <Image className="h-6 w-6 text-ui-fg-muted" />
-        )}
-      </div>
+      {!hidePreview && (
+        <div className="flex min-h-[92px] items-center justify-center overflow-hidden rounded border border-ui-border-base bg-ui-bg-subtle">
+          {value ? (
+            <img
+              src={value}
+              alt={previewAlt}
+              className="h-full max-h-[140px] w-full object-cover"
+            />
+          ) : (
+            <Image className="h-6 w-6 text-ui-fg-muted" />
+          )}
+        </div>
+      )}
     </div>
-  )
+  );
 }
