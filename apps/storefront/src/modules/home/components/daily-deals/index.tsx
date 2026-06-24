@@ -75,7 +75,7 @@ export default async function DailyDeals({
       <SectionHeader
         title="Daily Deals"
         subtitle="Prices valid while supplies last"
-        viewAllHref="/store"
+        viewAllHref="/store?sale=true"
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-gutter h-auto">
