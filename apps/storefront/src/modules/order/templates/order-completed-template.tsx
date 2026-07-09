@@ -8,6 +8,7 @@ import OnboardingCta from "@modules/order/components/onboarding-cta"
 import OrderDetails from "@modules/order/components/order-details"
 import ShippingDetails from "@modules/order/components/shipping-details"
 import PaymentDetails from "@modules/order/components/payment-details"
+import PurchaseConversion from "@modules/order/components/purchase-conversion"
 import { HttpTypes } from "@medusajs/types"
 
 type OrderCompletedTemplateProps = {
@@ -24,6 +25,11 @@ export default async function OrderCompletedTemplate({
   return (
     <div className="py-6 min-h-[calc(100vh-64px)]">
       <div className="content-container flex flex-col justify-center items-center gap-y-10 max-w-4xl h-full w-full">
+        <PurchaseConversion
+          transactionId={order.id}
+          value={order.total}
+          currency={order.currency_code}
+        />
         {isOnboarding && <OnboardingCta orderId={order.id} />}
         <div
           className="flex flex-col gap-4 max-w-4xl h-full bg-white w-full py-10"

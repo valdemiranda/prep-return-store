@@ -1428,6 +1428,7 @@ __metadata:
     "@medusajs/js-sdk": "npm:2.15.3"
     "@medusajs/types": "npm:2.15.3"
     "@medusajs/ui-preset": "npm:2.15.3"
+    "@next/third-parties": "npm:^16.2.10"
     "@radix-ui/react-accordion": "npm:^1.2.3"
     "@stripe/react-stripe-js": "npm:^5.3.0"
     "@stripe/stripe-js": "npm:^8.2.0"
@@ -4037,6 +4038,18 @@ __metadata:
   version: 15.5.18
   resolution: "@next/swc-win32-x64-msvc@npm:15.5.18"
   conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@next/third-parties@npm:^16.2.10":
+  version: 16.2.10
+  resolution: "@next/third-parties@npm:16.2.10"
+  dependencies:
+    third-party-capital: "npm:1.0.20"
+  peerDependencies:
+    next: ^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0-beta.0
+    react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
+  checksum: 10c0/5dbcfb7b123a0d63f6998d7e47f483d3cdf2f37dbc67f9ccbfedf67c988038eb516b87778e7b2fb17bf301f25bc7f79c019ca208a0ca2489530c1ea70d84c725
   languageName: node
   linkType: hard
 
@@ -17000,6 +17013,13 @@ __metadata:
   dependencies:
     any-promise: "npm:^1.0.0"
   checksum: 10c0/f375aeb2b05c100a456a30bc3ed07ef03a39cbdefe02e0403fb714b8c7e57eeaad1a2f5c4ecfb9ce554ce3db9c2b024eba144843cd9e344566d9fcee73b04767
+  languageName: node
+  linkType: hard
+
+"third-party-capital@npm:1.0.20":
+  version: 1.0.20
+  resolution: "third-party-capital@npm:1.0.20"
+  checksum: 10c0/7f45ff156ec9d7e2957a5b39061be22b780ffbd2d93c127252d908e2bff6cdd09f827a95909d457c8096e036f155006a38e355a06ee11cb6d63c7f4b150bbfb0
   languageName: node
   linkType: hard
 

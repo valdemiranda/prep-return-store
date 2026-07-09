@@ -1,5 +1,6 @@
 import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
+import { GoogleAnalytics } from "@next/third-parties/google"
 import "styles/globals.css"
 import { Inter, Chivo } from "next/font/google"
 
@@ -22,6 +23,8 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {
+  const gtagId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
+
   return (
     <html
       lang="en"
@@ -34,6 +37,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       <body className="bg-surface text-on-surface antialiased">
         <main className="relative">{props.children}</main>
       </body>
+      {gtagId && <GoogleAnalytics gaId={gtagId} />}
     </html>
   )
 }
