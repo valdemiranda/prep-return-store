@@ -2,7 +2,9 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
+import { getPrimaryCountryCode } from "@lib/util/primary-country"
 import ProductTemplate from "@modules/products/templates"
+import ProductJsonLd from "@modules/products/components/product-json-ld"
 import { HttpTypes } from "@medusajs/types"
 
 type Props = {
@@ -88,13 +90,26 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
+  const description = (product.description || product.title).slice(0, 160)
+  const primaryCountry = await getPrimaryCountryCode()
+  const images = product.thumbnail ? [product.thumbnail] : []
+
   return {
-    title: `${product.title} | One Stop Liquidation`,
-    description: `${product.title}`,
+    title: product.title,
+    description,
+    alternates: {
+      canonical: `/${primaryCountry}/products/${product.handle}`,
+    },
     openGraph: {
-      title: `${product.title} | One Stop Liquidation`,
-      description: `${product.title}`,
-      images: product.thumbnail ? [product.thumbnail] : [],
+      title: product.title,
+      description,
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.title,
+      description,
+      images,
     },
   }
 }
@@ -127,11 +142,14 @@ export default async function ProductPage(props: Props) {
   const images = getImagesForVariant(pricedProduct, selectedVariantId)
 
   return (
-    <ProductTemplate
-      product={pricedProduct}
-      region={region}
-      countryCode={params.countryCode}
-      images={images ?? []}
-    />
+    <>
+      <ProductJsonLd product={pricedProduct} />
+      <ProductTemplate
+        product={pricedProduct}
+        region={region}
+        countryCode={params.countryCode}
+        images={images ?? []}
+      />
+    </>
   )
 }

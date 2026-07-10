@@ -40,7 +40,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 
         <div className="grid grid-cols-1 small:grid-cols-12 gap-gutter items-start">
           <div className="w-full small:col-span-7 flex flex-col gap-6">
-            <ImageGallery images={images} />
+            <ImageGallery images={images} title={product.title} />
             {/* Desktop: badges fill the empty space below the image */}
             <ProductTrustBadges className="hidden small:block" />
           </div>

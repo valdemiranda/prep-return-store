@@ -13,9 +13,11 @@ const SCROLL_EDGE_THRESHOLD = 6
 
 type ImageGalleryProps = {
   images: HttpTypes.StoreProductImage[]
+  title?: string
 }
 
-export default function ImageGallery({ images }: ImageGalleryProps) {
+export default function ImageGallery({ images, title }: ImageGalleryProps) {
+  const altBase = title || "Product image"
   const [activeIndex, setActiveIndex] = useState(0)
   const [canScrollUp, setCanScrollUp] = useState(false)
   const [canScrollDown, setCanScrollDown] = useState(false)
@@ -100,7 +102,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               {!!image.url && (
                 <img
                   src={image.url}
-                  alt={`Thumbnail ${index + 1}`}
+                  alt={`${altBase} - thumbnail ${index + 1}`}
                   className="w-full h-full object-cover"
                 />
               )}
@@ -132,7 +134,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
         {!!activeImage?.url && (
           <Image
             src={activeImage.url}
-            alt="Main Product Image"
+            alt={altBase}
             fill
             priority
             className="object-contain"

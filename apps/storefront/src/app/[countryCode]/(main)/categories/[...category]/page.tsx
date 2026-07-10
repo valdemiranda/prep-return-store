@@ -7,6 +7,7 @@ import {
   listCategoriesWithAvailableProducts,
 } from "@lib/data/categories"
 import { listRegions } from "@lib/data/regions"
+import { getPrimaryCountryCode } from "@lib/util/primary-country"
 import { HttpTypes, StoreRegion } from "@medusajs/types"
 import CategoryTemplate from "@modules/categories/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
@@ -54,15 +55,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   try {
     const productCategory = await getCategoryByHandle(params.category)
 
-    const title = productCategory.name + " | One Stop Liquidation"
-
-    const description = productCategory.description ?? `${title} category.`
+    const primaryCountry = await getPrimaryCountryCode()
+    const description =
+      productCategory.description ??
+      `Shop ${productCategory.name} at unbeatable liquidation prices.`
 
     return {
-      title,
+      title: productCategory.name,
       description,
       alternates: {
-        canonical: `${params.category.join("/")}`,
+        canonical: `/${primaryCountry}/categories/${params.category.join("/")}`,
+      },
+      openGraph: {
+        title: productCategory.name,
+        description,
       },
     }
   } catch {

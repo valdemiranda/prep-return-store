@@ -14,7 +14,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import { AlertCircle, ArrowLeft } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Order Tracking | One Stop Liquidation",
+  title: "Order Tracking",
   description: "Track your order and view the latest delivery status.",
 }
 

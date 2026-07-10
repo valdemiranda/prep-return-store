@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 
 import { getCollectionByHandle, listCollections } from "@lib/data/collections"
 import { listRegions } from "@lib/data/regions"
+import { getPrimaryCountryCode } from "@lib/util/primary-country"
 import { StoreCollection, StoreRegion } from "@medusajs/types"
 import CollectionTemplate from "@modules/collections/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
@@ -61,12 +62,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
-  const metadata = {
-    title: `${collection.title} | One Stop Liquidation`,
-    description: `${collection.title} collection`,
-  } as Metadata
+  const primaryCountry = await getPrimaryCountryCode()
+  const description = `Shop the ${collection.title} collection at unbeatable liquidation prices.`
 
-  return metadata
+  return {
+    title: collection.title,
+    description,
+    alternates: {
+      canonical: `/${primaryCountry}/collections/${collection.handle}`,
+    },
+    openGraph: {
+      title: collection.title,
+      description,
+    },
+  }
 }
 
 export default async function CollectionPage(props: Props) {

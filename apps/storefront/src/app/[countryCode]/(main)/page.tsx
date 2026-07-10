@@ -12,7 +12,7 @@ import { getRegion } from "@lib/data/regions"
 import { DEFAULT_STORE_CONTENT, getStoreContent } from "@lib/data/store-content"
 
 export const metadata: Metadata = {
-  title: "One Stop Liquidation",
+  title: { absolute: "One Stop Liquidation" },
   description:
     "A premium liquidation outlet offering top-tier tech, home appliances, fashion, and furniture products at deep discounts.",
 }

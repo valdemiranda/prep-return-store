@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import SupportTemplate from "@modules/support/templates"
 
 export const metadata: Metadata = {
-  title: "Customer Support | One Stop Liquidation",
+  title: "Customer Support",
   description:
     "Have questions or need assistance? Our support team is here to help you.",
 }
