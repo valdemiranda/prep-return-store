@@ -30,6 +30,7 @@ export interface StaticPages {
   termsOfUse: string;
   privacy: string;
   returnPolicy: string;
+  aboutUs: string;
 }
 
 export interface StoreContent {

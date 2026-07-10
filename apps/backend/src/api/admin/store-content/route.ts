@@ -33,6 +33,7 @@ const storeContentSchema = z.object({
     termsOfUse: z.string(),
     privacy: z.string(),
     returnPolicy: z.string(),
+    aboutUs: z.string(),
   }),
 });
 

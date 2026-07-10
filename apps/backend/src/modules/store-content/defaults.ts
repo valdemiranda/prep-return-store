@@ -34,6 +34,7 @@ export type StoreContentData = {
     termsOfUse: string;
     privacy: string;
     returnPolicy: string;
+    aboutUs: string;
   };
 };
 
@@ -57,5 +58,7 @@ export const DEFAULT_STORE_CONTENT: StoreContentData = {
       "<h1>Privacy</h1><p>Learn how we collect, use, and protect customer information.</p>",
     returnPolicy:
       "<h1>Return Policy</h1><p>Review eligibility and instructions for returns.</p>",
+    aboutUs:
+      "<h1>About Us</h1><p>Learn more about our store and what we stand for.</p>",
   },
 };

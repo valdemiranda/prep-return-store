@@ -24,6 +24,7 @@ function mergeStaticPages(data?: Partial<StoreContentData["staticPages"]>) {
     privacy: data?.privacy ?? DEFAULT_STORE_CONTENT.staticPages.privacy,
     returnPolicy:
       data?.returnPolicy ?? DEFAULT_STORE_CONTENT.staticPages.returnPolicy,
+    aboutUs: data?.aboutUs ?? DEFAULT_STORE_CONTENT.staticPages.aboutUs,
   };
 }
 

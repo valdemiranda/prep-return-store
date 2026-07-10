@@ -7,6 +7,7 @@ const links = [
   { href: "/terms-of-use", label: "Terms of Use" },
   { href: "/privacy", label: "Privacy" },
   { href: "/return-policy", label: "Return Policy" },
+  { href: "/about-us", label: "About Us" },
 ]
 
 export default function InstitutionalLinks() {

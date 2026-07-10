@@ -4,6 +4,7 @@ const titles = {
   termsOfUse: "Terms of Use",
   privacy: "Privacy",
   returnPolicy: "Return Policy",
+  aboutUs: "About Us",
 }
 
 export type StaticPageKey = keyof typeof titles

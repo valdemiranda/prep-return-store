@@ -66,6 +66,20 @@ export const StaticPagesSection: React.FC<StaticPagesSectionProps> = ({
             className="font-mono bg-surface-container border border-outline-variant rounded-[4px] focus:ring-2 focus:ring-primary focus:border-primary text-sm p-3"
           />
         </div>
+
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="about-page" className="text-xs font-semibold text-on-surface-variant">
+            About Us HTML
+          </Label>
+          <Textarea
+            id="about-page"
+            placeholder="<h1>About Us</h1><p>Your about us content...</p>"
+            value={value.aboutUs || ""}
+            onChange={(e) => handleChange("aboutUs", e.target.value)}
+            rows={8}
+            className="font-mono bg-surface-container border border-outline-variant rounded-[4px] focus:ring-2 focus:ring-primary focus:border-primary text-sm p-3"
+          />
+        </div>
       </div>
     </div>
   )
