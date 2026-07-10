@@ -18,7 +18,7 @@ export default async function StaticPageTemplate({
 
   return (
     <main className="content-container py-16">
-      <article className="prose prose-neutral max-w-3xl prose-headings:font-display prose-a:text-primary">
+      <article className="prose prose-neutral mx-auto max-w-3xl prose-headings:font-display prose-a:text-primary">
         {html ? (
           <div dangerouslySetInnerHTML={{ __html: html }} />
         ) : (
