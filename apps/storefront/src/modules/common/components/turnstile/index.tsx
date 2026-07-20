@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { loadTurnstileScript } from "./load-script"
 
 type TurnstileAppearance = "always" | "execute" | "interaction-only"
@@ -38,11 +38,13 @@ const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 export const isTurnstileConfigured = Boolean(SITE_KEY)
 
 /**
- * Widget do Cloudflare Turnstile. Injeta um input hidden
- * "cf-turnstile-response" com o token — assim ele viaja no formData (server
- * actions) e na query (forms GET) sem lógica extra. Quando
- * NEXT_PUBLIC_TURNSTILE_SITE_KEY não está configurado, renderiza null (graceful
- * degradation) e o backend também desabilita a verificação.
+ * Widget do Cloudflare Turnstile. O próprio widget injeta um input hidden
+ * "cf-turnstile-response" no container — assim o token viaja no formData
+ * (server actions) e na query (forms GET) sem lógica extra. Não adicionar um
+ * segundo input com esse nome: o parâmetro duplicado vira array na query e
+ * quebra a validação. Quando NEXT_PUBLIC_TURNSTILE_SITE_KEY não está
+ * configurado, renderiza null (graceful degradation) e o backend também
+ * desabilita a verificação.
  */
 export default function Turnstile({
   onVerify,
@@ -54,7 +56,6 @@ export default function Turnstile({
   // Mantém a callback em ref para não reiniciar o widget a cada render do pai.
   const onVerifyRef = useRef(onVerify)
   onVerifyRef.current = onVerify
-  const [token, setToken] = useState("")
 
   useEffect(() => {
     if (!SITE_KEY || !containerRef.current) {
@@ -72,16 +73,13 @@ export default function Turnstile({
         sitekey: SITE_KEY,
         appearance,
         callback: (t: string) => {
-          setToken(t)
           onVerifyRef.current?.(t)
         },
         "expired-callback": () => {
-          setToken("")
           onVerifyRef.current?.("")
           window.turnstile?.reset(widgetIdRef.current ?? undefined)
         },
         "error-callback": () => {
-          setToken("")
           onVerifyRef.current?.("")
         },
       })
@@ -103,7 +101,6 @@ export default function Turnstile({
   return (
     <div className={className}>
       <div ref={containerRef} />
-      <input type="hidden" name="cf-turnstile-response" value={token} />
     </div>
   )
 }

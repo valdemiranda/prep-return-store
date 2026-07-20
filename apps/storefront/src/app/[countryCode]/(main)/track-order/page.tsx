@@ -42,7 +42,7 @@ export default async function TrackOrderPage(props: TrackOrderProps) {
       tracking = await retrieveOrderTracking(
         orderid,
         email,
-        typeof captchaToken === "string" ? captchaToken : undefined
+        Array.isArray(captchaToken) ? captchaToken[0] : captchaToken
       )
       if (!tracking) {
         errorMsg = "Order not found. Please check the details and try again."
