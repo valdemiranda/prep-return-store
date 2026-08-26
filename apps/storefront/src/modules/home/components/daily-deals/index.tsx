@@ -2,9 +2,9 @@ import { listProducts } from "@lib/data/products"
 import { getProductPrice } from "@lib/util/get-product-price"
 import SectionHeader from "../section-header"
 import DealCard from "./deal-card"
+import { listSaleProductIds } from "./sale-products"
 
 const DEALS_TO_SHOW = 4
-const DEALS_FETCH_LIMIT = 100
 
 type DailyDeal = {
   product: Awaited<
@@ -44,12 +44,19 @@ export default async function DailyDeals({
 }: {
   countryCode: string
 }) {
+  const saleProductIds = await listSaleProductIds(countryCode)
+
+  if (!saleProductIds.length) {
+    return null
+  }
+
   const {
     response: { products },
   } = await listProducts({
     countryCode,
     queryParams: {
-      limit: DEALS_FETCH_LIMIT,
+      id: saleProductIds,
+      limit: saleProductIds.length,
     },
   })
 
