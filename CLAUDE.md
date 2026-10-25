@@ -116,6 +116,7 @@ The shared secret pair **`STOREFRONT_REVALIDATE_SECRET` (backend) ↔ `REVALIDAT
 ## Deployment
 
 - **Nixpacks** (two separate services): `nixpacks.backend.toml` / `nixpacks.storefront.toml`. Build via `npx turbo run build --filter=@dtc/<app>`; start via `yarn workspace @dtc/<app> run start`. The install phase is left to the provider (Corepack + `yarn install --check-cache`, detected from the root `.yarnrc.yml`).
+- **Buildpacks (Heroku CNB, current Easypanel setup):** the buildpack ignores `nixpacks.*.toml` and always runs the root `heroku-build` script and the root `Procfile`. Both go through `scripts/deploy-app.mjs`, which reads `DEPLOY_APP=backend|storefront` (set per Easypanel service; available at build and runtime) to build/start only that workspace. Without `DEPLOY_APP` the build fails fast. Storefront still needs `NEXT_PUBLIC_*` vars at build time.
 - **Local production:** `yarn start` → `scripts/start-production.mjs` spawns the built backend (`apps/backend/.medusa/server`, requires prior `yarn build`) and the storefront.
 - **`docker-compose.yaml`** runs only Postgres 16 (with a custom `pg_hba.conf`). Redis is expected to be provided externally — there is no Redis container.
 
