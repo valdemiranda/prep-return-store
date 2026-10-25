@@ -4,10 +4,14 @@ import { constants } from "node:os";
 // Buildpack deploys (Heroku CNB on Easypanel) always run the root package.json
 // scripts and the root Procfile, so each service picks its workspace through
 // DEPLOY_APP instead of building/starting the whole monorepo.
-const apps = ["backend", "storefront"];
+// The buildpack prunes devDependencies (ts-node/@swc/core) after building, so
+// Medusa can't load medusa-config.ts at runtime: the backend must start from
+// its compiled output (.medusa/server), as the Medusa deploy guide requires.
+const startScripts = { backend: "start:production", storefront: "start" };
+const apps = Object.keys(startScripts);
 const commands = {
   build: (app) => ["turbo", "run", "build", `--filter=@dtc/${app}`],
-  start: (app) => ["workspace", `@dtc/${app}`, "run", "start"],
+  start: (app) => ["workspace", `@dtc/${app}`, "run", startScripts[app]],
 };
 
 const action = process.argv[2];

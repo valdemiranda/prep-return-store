@@ -15,6 +15,7 @@
   "scripts": {
     "build": "medusa build",
     "start": "medusa db:migrate && medusa start",
+    "start:production": "cd .medusa/server && medusa db:migrate && medusa start",
     "predeploy": "medusa db:migrate",
     "dev": "medusa develop",
     "email:dev": "vite --config email-preview/vite.config.ts",
