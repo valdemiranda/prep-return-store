@@ -18,12 +18,16 @@ export const listProducts = async ({
   countryCode,
   regionId,
   includeUnavailable = false,
+  cache = "force-cache",
 }: {
   pageParam?: number
   queryParams?: ProductListQueryParams
   countryCode?: string
   regionId?: string
   includeUnavailable?: boolean
+  // "no-store" para consultas cuja combinação de parâmetros muda a cada request
+  // (ex.: IDs sorteados): cacheá-las só acumularia entradas que não se repetem.
+  cache?: "force-cache" | "no-store"
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
@@ -56,9 +60,10 @@ export const listProducts = async ({
     ...(await getAuthHeaders()),
   }
 
-  const next = {
-    ...(await getCacheOptions("products", { global: true })),
-  }
+  const next =
+    cache === "no-store"
+      ? undefined
+      : { ...(await getCacheOptions("products", { global: true })) }
 
   const fields = includeUnavailable
     ? (queryParams?.fields ??
@@ -82,7 +87,7 @@ export const listProducts = async ({
         },
         headers,
         next,
-        cache: "force-cache",
+        cache,
       },
     )
     .then(({ products, count }) => {

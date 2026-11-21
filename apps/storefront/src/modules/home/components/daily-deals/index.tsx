@@ -1,5 +1,6 @@
 import { listProducts } from "@lib/data/products"
 import { getProductPrice } from "@lib/util/get-product-price"
+import { shuffle } from "@lib/util/shuffle"
 import SectionHeader from "../section-header"
 import DealCard from "./deal-card"
 import { listSaleProductIds } from "./sale-products"
@@ -21,23 +22,8 @@ const hasDiscount = (item: DailyDeal): item is DiscountedDailyDeal =>
   item.cheapestPrice?.price_type === "sale" &&
   Number.parseInt(item.cheapestPrice.percentage_diff, 10) > 0
 
-const selectRandomDeals = <T,>(items: T[], size: number) => {
-  if (items.length <= size) {
-    return items
-  }
-
-  const shuffled = [...items]
-
-  for (let index = shuffled.length - 1; index > 0; index--) {
-    const randomIndex = Math.floor(Math.random() * (index + 1))
-    ;[shuffled[index], shuffled[randomIndex]] = [
-      shuffled[randomIndex],
-      shuffled[index],
-    ]
-  }
-
-  return shuffled.slice(0, size)
-}
+const selectRandomDeals = <T,>(items: T[], size: number) =>
+  items.length <= size ? items : shuffle(items).slice(0, size)
 
 export default async function DailyDeals({
   countryCode,

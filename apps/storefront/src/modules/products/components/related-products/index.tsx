@@ -1,6 +1,7 @@
-import { listProducts } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
+import { listRelatedProducts } from "@lib/data/related-products"
 import { HttpTypes } from "@medusajs/types"
+import { PRODUCT_GRID_COLUMNS } from "@modules/store/constants"
 import Product from "../product-preview"
 
 type RelatedProductsProps = {
@@ -18,29 +19,7 @@ export default async function RelatedProducts({
     return null
   }
 
-  // edit this function to define your related products logic
-  const queryParams: HttpTypes.StoreProductListParams = {}
-  if (region?.id) {
-    queryParams.region_id = region.id
-  }
-  if (product.collection_id) {
-    queryParams.collection_id = [product.collection_id]
-  }
-  if (product.tags) {
-    queryParams.tag_id = product.tags
-      .map((t) => t.id)
-      .filter(Boolean) as string[]
-  }
-  queryParams.is_giftcard = false
-
-  const products = await listProducts({
-    queryParams,
-    countryCode,
-  }).then(({ response }) => {
-    return response.products.filter(
-      (responseProduct) => responseProduct.id !== product.id
-    )
-  })
+  const products = await listRelatedProducts({ product, countryCode })
 
   if (!products.length) {
     return null
@@ -58,7 +37,9 @@ export default async function RelatedProducts({
           </p>
         </div>
 
-        <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 xlarge:grid-cols-5 2xlarge:grid-cols-6 gap-x-6 gap-y-10 small:gap-y-12">
+        <ul
+          className={`grid ${PRODUCT_GRID_COLUMNS} gap-x-6 gap-y-10 small:gap-y-12`}
+        >
           {products.map((product) => (
             <li key={product.id}>
               <Product region={region} product={product} />

@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
+import { shuffle } from "@lib/util/shuffle"
 import ProductPreview from "@modules/products/components/product-preview"
 import SectionHeader from "../section-header"
 
@@ -22,13 +23,7 @@ export default function RandomProductsCarouselClient({
   const scrollRef2 = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Shuffle products array using Fisher-Yates and select distinct sets
-    const shuffled = [...products]
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-    }
-    const maxProducts = shuffled.slice(0, 40)
+    const maxProducts = shuffle(products).slice(0, 40)
     if (maxProducts.length >= 2) {
       const mid = Math.ceil(maxProducts.length / 2)
       setRandomProductsRow1(maxProducts.slice(0, mid))

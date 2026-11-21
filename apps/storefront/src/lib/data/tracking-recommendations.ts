@@ -2,6 +2,7 @@
 
 import { HttpTypes } from "@medusajs/types"
 import { filterProductsBySale } from "@lib/util/product-filters"
+import { shuffle } from "@lib/util/shuffle"
 
 import { listProducts } from "./products"
 
@@ -13,19 +14,6 @@ type RecommendationOptions = {
   countryCode: string
   categoryIds?: string[]
   excludeProductIds?: string[]
-}
-
-function shuffleProducts(products: HttpTypes.StoreProduct[]) {
-  const shuffled = [...products]
-
-  for (let index = shuffled.length - 1; index > 0; index--) {
-    const swapIndex = Math.floor(Math.random() * (index + 1))
-    const current = shuffled[index]
-    shuffled[index] = shuffled[swapIndex]
-    shuffled[swapIndex] = current
-  }
-
-  return shuffled
 }
 
 function appendUniqueProducts({
@@ -87,7 +75,7 @@ export async function listTrackingRecommendations({
   if (uniqueCategoryIds.length) {
     appendUniqueProducts({
       target: recommendations,
-      products: shuffleProducts(
+      products: shuffle(
         await fetchProducts({
           countryCode,
           queryParams: { category_id: uniqueCategoryIds },
@@ -105,7 +93,7 @@ export async function listTrackingRecommendations({
   if (recommendations.length < RECOMMENDATION_COUNT) {
     appendUniqueProducts({
       target: recommendations,
-      products: shuffleProducts(filterProductsBySale(catalogProducts, "true")),
+      products: shuffle(filterProductsBySale(catalogProducts, "true")),
       excludedIds,
     })
   }
@@ -113,7 +101,7 @@ export async function listTrackingRecommendations({
   if (recommendations.length < RECOMMENDATION_COUNT) {
     appendUniqueProducts({
       target: recommendations,
-      products: shuffleProducts(catalogProducts),
+      products: shuffle(catalogProducts),
       excludedIds,
     })
   }

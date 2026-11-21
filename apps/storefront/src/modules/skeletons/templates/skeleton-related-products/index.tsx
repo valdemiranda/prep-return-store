@@ -1,5 +1,6 @@
 import repeat from "@lib/util/repeat"
 import SkeletonProductPreview from "@modules/skeletons/components/skeleton-product-preview"
+import { PRODUCT_GRID_COLUMNS } from "@modules/store/constants"
 
 const SkeletonRelatedProducts = () => {
   return (
@@ -9,7 +10,9 @@ const SkeletonRelatedProducts = () => {
           <div className="h-7 w-48 animate-pulse bg-surface-container-high rounded-sm"></div>
           <div className="mt-2 pl-4 h-4 w-72 animate-pulse bg-surface-container-high rounded-sm"></div>
         </div>
-        <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 xlarge:grid-cols-5 2xlarge:grid-cols-6 gap-x-6 gap-y-10 small:gap-y-12">
+        <ul
+          className={`grid ${PRODUCT_GRID_COLUMNS} gap-x-6 gap-y-10 small:gap-y-12`}
+        >
           {repeat(6).map((index) => (
             <li key={index}>
               <SkeletonProductPreview />
