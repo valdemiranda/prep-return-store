@@ -14,8 +14,6 @@ import PaginatedProducts from "@modules/store/templates/paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 
-const CATEGORY_SKELETON_PRODUCTS = 8
-
 export default async function CategoryTemplate({
   category,
   sortBy,
@@ -122,13 +120,7 @@ export default async function CategoryTemplate({
               </ul>
             </div>
           )}
-          <Suspense
-            fallback={
-              <SkeletonProductGrid
-                numberOfProducts={CATEGORY_SKELETON_PRODUCTS}
-              />
-            }
-          >
+          <Suspense fallback={<SkeletonProductGrid />}>
             <PaginatedProducts
               sortBy={sort}
               page={pageNumber}

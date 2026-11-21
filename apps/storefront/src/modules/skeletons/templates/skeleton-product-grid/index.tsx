@@ -1,14 +1,15 @@
 import repeat from "@lib/util/repeat"
 import SkeletonProductPreview from "@modules/skeletons/components/skeleton-product-preview"
+import { PRODUCT_GRID_COLUMNS, PRODUCT_PAGE_SIZE } from "@modules/store/constants"
 
 const SkeletonProductGrid = ({
-  numberOfProducts = 12,
+  numberOfProducts = PRODUCT_PAGE_SIZE,
 }: {
   numberOfProducts?: number
 }) => {
   return (
     <ul
-      className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 xlarge:grid-cols-5 2xlarge:grid-cols-6 gap-x-6 gap-y-8 flex-1"
+      className={`grid ${PRODUCT_GRID_COLUMNS} gap-x-6 gap-y-8 flex-1`}
       data-testid="products-list-loader"
     >
       {repeat(numberOfProducts).map((index) => (

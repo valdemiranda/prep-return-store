@@ -4,13 +4,12 @@ import { ChevronRight } from "lucide-react"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import { STORE_PRODUCT_PAGE_SIZE } from "@modules/store/constants"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { listRootCategoriesWithAvailableProducts } from "@lib/data/categories"
 import { listCatalogProducts } from "@lib/data/catalog-products"
 
 import PaginatedProducts from "./paginated-products"
-
-const STORE_PRODUCT_LIMIT = 24
 
 const StoreTemplate = async ({
   sortBy,
@@ -104,7 +103,11 @@ const StoreTemplate = async ({
               {pageTitle}
             </h1>
           </div>
-          <Suspense fallback={<SkeletonProductGrid />}>
+          <Suspense
+            fallback={
+              <SkeletonProductGrid numberOfProducts={STORE_PRODUCT_PAGE_SIZE} />
+            }
+          >
             <PaginatedProducts
               sortBy={sort}
               page={pageNumber}
@@ -114,7 +117,7 @@ const StoreTemplate = async ({
               price={price}
               sale={sale}
               newArrivals={newArrivals}
-              limit={STORE_PRODUCT_LIMIT}
+              limit={STORE_PRODUCT_PAGE_SIZE}
             />
           </Suspense>
         </div>
