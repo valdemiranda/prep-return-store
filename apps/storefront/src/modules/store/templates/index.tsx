@@ -53,7 +53,6 @@ const StoreTemplate = async ({
     countryCode,
     sale,
     newArrivals,
-    includeStats: true,
   })
     .then(({ price_bounds }) => price_bounds)
     .catch(() => null)

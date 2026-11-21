@@ -16,7 +16,6 @@ export type CatalogParams = {
   sale?: "true" | "false"
   newArrivals: boolean
   regionId?: string
-  includeStats: boolean
 }
 
 type ParseCatalogParamsResult =
@@ -35,7 +34,6 @@ const querySchema = z.object({
   sale: z.enum(["true", "false"]).optional(),
   new_arrivals: z.enum(["true", "false"]).optional(),
   region_id: z.string().trim().optional(),
-  include_stats: z.enum(["true", "false"]).optional(),
 })
 
 const toArray = (value?: string | string[]) =>
@@ -74,7 +72,6 @@ export function parseCatalogParams(query: unknown): ParseCatalogParamsResult {
       sale: data.sale,
       newArrivals: data.new_arrivals === "true",
       regionId: data.region_id || undefined,
-      includeStats: data.include_stats === "true",
     },
   }
 }

@@ -47,6 +47,10 @@ export const listProductsWithSort = async ({
     }
   }
 
+  // O catálogo já filtrou o estoque antes de paginar; filtrar de novo aqui
+  // removeria itens da página já montada e cada página teria um tamanho.
+  // Também não pedimos `+variants.inventory_quantity`: o card não exibe
+  // estoque e o campo faria o Medusa recalcular a disponibilidade à toa.
   const {
     response: { products },
   } = await listProducts({
@@ -54,8 +58,10 @@ export const listProductsWithSort = async ({
     queryParams: {
       id: catalog.product_ids,
       limit: catalog.product_ids.length,
+      fields: "*variants.calculated_price,*variants.images,+metadata,+tags,",
     },
     countryCode,
+    includeUnavailable: true,
   })
 
   const productsById = new Map(products.map((product) => [product.id, product]))

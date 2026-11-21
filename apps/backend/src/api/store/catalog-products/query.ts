@@ -10,23 +10,12 @@ import {
   getPriceBounds,
   matchesPrice,
   matchesSale,
-  ProductSummary,
   sortSummaries,
-  summarizeProduct,
 } from "./pricing";
 import { listSalesChannelProductIds } from "./sales-channels";
+import { scanProductSummaries } from "./scan";
 
-const INDEX_BATCH_SIZE = 500;
 const NEW_ARRIVALS_LIMIT = 50;
-
-const INDEX_FIELDS = [
-  "id",
-  "created_at",
-  "variants.calculated_price.*",
-  "variants.inventory_quantity",
-  "variants.manage_inventory",
-  "variants.allow_backorder",
-];
 
 type CatalogResult = {
   product_ids: string[];
@@ -57,33 +46,22 @@ async function getPricingContext(query: any, regionId?: string) {
     : undefined;
 }
 
-async function listIndexed(query: any, filters: any, params: CatalogParams) {
+async function listIndexed(
+  query: any,
+  filters: any,
+  params: CatalogParams,
+  salesChannelIds: string[],
+) {
   const pricingContext = await getPricingContext(query, params.regionId);
   const context = pricingContext
     ? { variants: { calculated_price: QueryContext(pricingContext) } }
     : undefined;
-  const summaries: ProductSummary[] = [];
-  const maxScan = params.newArrivals ? NEW_ARRIVALS_LIMIT : Infinity;
-  let skip = 0;
-  let count = 0;
-
-  do {
-    const take = Math.min(INDEX_BATCH_SIZE, maxScan - summaries.length);
-    const { data, metadata } = await query.graph(
-      {
-        entity: "product",
-        fields: INDEX_FIELDS,
-        filters,
-        pagination: { take, skip, order: { created_at: "DESC" } },
-        context,
-      },
-      { cache: { enable: true } },
-    );
-
-    count = metadata?.count ?? 0;
-    summaries.push(...data.map(summarizeProduct));
-    skip += take;
-  } while (skip < count && summaries.length < maxScan);
+  const summaries = await scanProductSummaries(query, {
+    filters,
+    context,
+    maxScan: params.newArrivals ? NEW_ARRIVALS_LIMIT : Infinity,
+    salesChannelIds,
+  });
 
   const stocked = summaries.filter((product) => product.hasStock);
   const saleMatched = stocked.filter((product) =>
@@ -114,5 +92,5 @@ export async function listCatalogProducts(
   const productIds = await listSalesChannelProductIds(query, salesChannelIds);
   const filters = getProductFilters(params, productIds);
 
-  return listIndexed(query, filters, params);
+  return listIndexed(query, filters, params, salesChannelIds);
 }

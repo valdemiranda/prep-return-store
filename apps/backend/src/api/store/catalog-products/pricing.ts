@@ -25,22 +25,16 @@ const isSalePrice = (price?: Price | null) =>
   price?.calculated_price?.price_list_type === "sale" ||
   price?.price_list_type === "sale";
 
+// Precisa ser a mesma regra de `hasAvailableStock` no storefront
+// (apps/storefront/src/lib/util/product-availability.ts): se divergirem, a
+// paginação volta a ficar com quantidades diferentes por página.
 function hasAvailableStock(product: any) {
-  const variants = product.variants ?? [];
-  if (!variants.length) {
-    return true;
-  }
-
-  return variants.some((variant: any) => {
+  return (product.variants ?? []).some((variant: any) => {
     if (variant.allow_backorder || !variant.manage_inventory) {
       return true;
     }
 
-    if (variant.inventory_quantity === undefined) {
-      return true;
-    }
-
-    return Number(variant.inventory_quantity) > 0;
+    return Number(variant.inventory_quantity ?? 0) > 0;
   });
 }
 

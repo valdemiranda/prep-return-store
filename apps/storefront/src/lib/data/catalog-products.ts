@@ -23,7 +23,6 @@ type ListCatalogProductsInput = {
   price?: string
   sale?: string
   newArrivals?: string
-  includeStats?: boolean
 }
 
 const getQueryValue = (value: unknown) => {
@@ -42,7 +41,6 @@ export const listCatalogProducts = async ({
   price,
   sale,
   newArrivals,
-  includeStats,
 }: ListCatalogProductsInput): Promise<CatalogProductsResult> => {
   const region = await getRegion(countryCode)
   const limit = queryParams?.limit || 12
@@ -77,7 +75,6 @@ export const listCatalogProducts = async ({
       sale,
       new_arrivals: newArrivals,
       region_id: region.id,
-      include_stats: includeStats ? "true" : undefined,
     },
     next,
     cache: "force-cache",
